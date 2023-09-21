@@ -8,11 +8,19 @@ SCREEN_HEIGHT = 768
 # Kleuren worden aangeven met een tuple van 3 getallen - rood, groen, blauw - tussen 0 en 255.
 # 0, 0, 0 betekend geen kleurm, dus zwart.
 BACKGROUND_COLOR = (0, 0, 0)
-pygame.display.set_caption("Werkplaats 1: PyGame")
+pygame.display.set_caption("Fighter Jet-mania")
+background_image = pygame.image.load("images/pygame_start_bg.png")
 
+font = pygame.font.SysFont("arialblack", 40)
+text_color = (255, 255, 255)
 
 clock = pygame.time.Clock()
 canvas = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+
+def draw_text(text, font, text_color, x, y):
+    img = font.render(text, True, text_color)
+    canvas.blit(img, (x, y))
 
 
 def handle_events():
@@ -28,48 +36,21 @@ def handle_events():
             if event.key == pygame.K_ESCAPE or event.key == pygame.K_SPACE:
                 halting = True
                 break
+
     return halting
 
 
-def get_new_speed_directions(
-    current_speed, position_rect, screen_boundary_x, screen_boundary_y
-):
-    speed_x, speed_y = current_speed
-    # Linkerkant van het scherm geraakt?
-    if position_rect.left <= 0:
-        speed_x = LOGO_SPEED
-    # Rechterkant van het scherm geraakt?
-    elif position_rect.right >= screen_boundary_x:
-        speed_x = -LOGO_SPEED
-
-    # Bovenkant van het scherm geraakt?
-    if position_rect.top <= 0:
-        speed_y = LOGO_SPEED
-    # Onderkant van het scherm geraakt?
-    elif position_rect.bottom >= screen_boundary_y:
-        speed_y = -LOGO_SPEED
-    return [speed_x, speed_y]
-
-
-logo = pygame.image.load("images/ra_logo.png").convert_alpha()
-logo_rect = logo.get_rect()
-logo_speed = [LOGO_SPEED, LOGO_SPEED]
+# logo = pygame.image.load("images/ra_logo.png").convert_alpha()
+# logo_rect = logo.get_rect()
+# logo_speed = [LOGO_SPEED, LOGO_SPEED]
 
 # Dit is de "game loop"
 quit_program = False
 while not quit_program:
     quit_program = handle_events()
-    canvas.fill(BACKGROUND_COLOR)
-    logo_speed = get_new_speed_directions(
-        current_speed=logo_speed,
-        position_rect=logo_rect,
-        screen_boundary_x=SCREEN_WIDTH,
-        screen_boundary_y=SCREEN_HEIGHT,
-    )
-    # Met de nieuwe snelheid verplaatsen we de locatie van het logo
-    # https://www.pygame.org/docs/ref/rect.html
-    logo_rect.move_ip(logo_speed)
-    canvas.blit(logo, logo_rect)
+    canvas.blit(background_image, (0, 0))
+    draw_text("PRESS P TO PLAY", font, text_color, 312, 359)
+
     pygame.display.flip()
     clock.tick(GAME_SPEED)
 
