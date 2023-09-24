@@ -9,9 +9,9 @@ SCREEN_HEIGHT = 768
 BACKGROUND_COLOR = (0, 0, 0)
 pygame.display.set_caption("Fighter Jet-mania")
 background_image = pygame.image.load("images/pygame_start_bg.png")
-background_image2 = pygame.image.load("images/ra_logo.png")
+background_image2 = pygame.image.load("images/placeholder_img.png")
 
-font = pygame.font.SysFont("arialblack", 40)
+font = pygame.font.SysFont("arianblack", 60)
 text_color = (255, 255, 255)
 
 clock = pygame.time.Clock()
