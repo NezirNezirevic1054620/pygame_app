@@ -18,7 +18,7 @@ canvas = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Functie voor het game-over scherm
 def game_over_screen():
-    canvas.fill(background_image2)
+    canvas.fill(BACKGROUND_COLOR)
     game_over_text = font.render("Game Over", True, text_color)
     game_over_rect = game_over_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
     
