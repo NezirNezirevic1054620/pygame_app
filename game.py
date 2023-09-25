@@ -10,8 +10,9 @@ BACKGROUND_COLOR = (0, 0, 0)
 pygame.display.set_caption("Fighter Jet-mania")
 background_image = pygame.image.load("images/pygame_start_bg.png")
 background_image2 = pygame.image.load("images/placeholder_img.png")
-
-font = pygame.font.SysFont("arianblack", 60)
+start_btn_img = pygame.image.load("images/start_btn.png")
+exit_btn_img = pygame.image.load("images/exit_btn.png")
+font = pygame.font.SysFont("arianblack", 45)
 text_color = (255, 255, 255)
 
 clock = pygame.time.Clock()
@@ -23,10 +24,14 @@ def start_screen():
     canvas.blit(background_image, (0, 0))
     play_text = "PRESS P TO PLAY"
     quit_text = "PRESS Q TO QUIT"
+    start_btn = pygame.image.load("images/start_btn.png")
+    exit_btn = pygame.image.load("images/exit_btn.png")
     play_game = font.render(play_text, font, True, text_color)
     quit_game = font.render(quit_text, font, True, text_color)
-    canvas.blit(play_game, (320, 350))
-    canvas.blit(quit_game, (320, 450))
+    canvas.blit(play_game, (365, 480))
+    canvas.blit(quit_game, (370, 650))
+    canvas.blit(start_btn, (360, 350))
+    canvas.blit(exit_btn, (380, 520))
 
 
 # als deze functie wordt opgeroept dan start de game
@@ -50,6 +55,8 @@ def handle_events():
                 break
             if event.key == pygame.K_p:
                 start_game()
+            if event.key == pygame.K_m:
+                start_screen()
 
     return halting
 
