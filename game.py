@@ -16,15 +16,20 @@ text_color = (255, 255, 255)
 clock = pygame.time.Clock()
 canvas = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
+
 # Functie voor het game-over scherm
 def game_over_screen():
     canvas.fill(BACKGROUND_COLOR)
     game_over_text = font.render("Game Over", True, text_color)
-    game_over_rect = game_over_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
-    
+    game_over_rect = game_over_text.get_rect(
+        center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+    )
+
     restart_text = font.render("PRESS R TO RESTART", True, text_color)
-    restart_rect = restart_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50))
-    
+    restart_rect = restart_text.get_rect(
+        center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50)
+    )
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -32,11 +37,13 @@ def game_over_screen():
                 quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_r:
-                    return  # Terug naar het startscherm als R wordt ingedrukt
+                    start_screen()
+                    pygame.display.flip()
 
         canvas.blit(game_over_text, game_over_rect)
         canvas.blit(restart_text, restart_rect)
         pygame.display.flip()
+
 
 # Functie om het startscherm te tonen
 def start_screen():
@@ -52,10 +59,12 @@ def start_screen():
     canvas.blit(start_btn, (360, 350))
     canvas.blit(exit_btn, (380, 520))
 
+
 # Functie om het spel te starten
 def start_game():
     canvas.blit(background_image2, (0, 0))
     pygame.display.flip()
+
 
 # Functie om gebeurtenissen af te handelen
 def handle_events():
@@ -72,9 +81,13 @@ def handle_events():
                 start_game()
             if event.key == pygame.K_m:
                 start_screen()
+            if event.key == pygame.K_l:
+                game_over_screen()
 
     return halting
 
+
+start_screen()
 # Dit is de "game loop"
 quit_program = False
 while not quit_program:
@@ -82,7 +95,6 @@ while not quit_program:
     pygame.display.flip()
     clock.tick(GAME_SPEED)
 
-game_over_screen()
 pygame.quit()
 
 print("Game over!")
