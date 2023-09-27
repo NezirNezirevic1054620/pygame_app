@@ -1,4 +1,5 @@
 import pygame
+from pygame import mixer
 
 pygame.init()
 GAME_SPEED = 60
@@ -12,6 +13,8 @@ start_btn_img = pygame.image.load("images/start_btn.png")
 exit_btn_img = pygame.image.load("images/exit_btn.png")
 font = pygame.font.SysFont("arianblack", 45)
 text_color = (255, 255, 255)
+mixer.music.load("sounds/bg_sound.mp3")
+mixer.music.play(-1)
 
 clock = pygame.time.Clock()
 canvas = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
