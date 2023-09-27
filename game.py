@@ -11,6 +11,8 @@ background_image = pygame.image.load("images/pygame_start_bg.png")
 background_image2 = pygame.image.load("images/placeholder_img.png")
 start_btn_img = pygame.image.load("images/start_btn.png")
 exit_btn_img = pygame.image.load("images/exit_btn.png")
+gameover_bg_img = pygame.image.load("images/gameover_background.png.png")
+gameover_fl_img = pygame.image.load("images/gameover_frontlayer.png.png")
 font = pygame.font.SysFont("arianblack", 45)
 text_color = (255, 255, 255)
 bg_music = "sounds/bg_sound.mp3"
@@ -28,7 +30,7 @@ def background_music():
 
 # Functie voor het game-over scherm
 def game_over_screen():
-    canvas.fill(BACKGROUND_COLOR)
+    canvas.blit(gameover_bg_img, (0, 0))
     game_over_text = font.render("Game Over", True, text_color)
     game_over_rect = game_over_text.get_rect(
         center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
