@@ -13,11 +13,17 @@ start_btn_img = pygame.image.load("images/start_btn.png")
 exit_btn_img = pygame.image.load("images/exit_btn.png")
 font = pygame.font.SysFont("arianblack", 45)
 text_color = (255, 255, 255)
-mixer.music.load("sounds/bg_sound.mp3")
-mixer.music.play(-1)
+bg_music = "sounds/bg_sound.mp3"
 
 clock = pygame.time.Clock()
 canvas = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+
+# achtergrondmuziek functie
+def background_music():
+    pygame.mixer.init()
+    mixer.music.load(bg_music)
+    mixer.music.play(-1)
 
 
 # Functie voor het game-over scherm
@@ -90,6 +96,7 @@ def handle_events():
     return halting
 
 
+background_music()
 start_screen()
 # Dit is de "game loop"
 quit_program = False
