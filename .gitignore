@@ -1,3 +1,6 @@
 images/.DS_Store
 .DS_Store
 classes/__pycache__/button.cpython-311.pyc
+screens/__pycache__/main.cpython-311.pyc
+.gitignore
+screens/__pycache__/start_screen.cpython-311.pyc

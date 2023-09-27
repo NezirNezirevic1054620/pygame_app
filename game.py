@@ -1,5 +1,6 @@
 import pygame
 from pygame import mixer
+from screens import main
 
 pygame.init()
 GAME_SPEED = 60
@@ -7,18 +8,17 @@ SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = 768
 BACKGROUND_COLOR = (0, 0, 0)
 pygame.display.set_caption("Fighter Jet-mania")
-background_image = pygame.image.load("images/pygame_start_bg.png")
-background_image2 = pygame.image.load("images/placeholder_img.png")
-start_btn_img = pygame.image.load("images/start_btn.png")
-exit_btn_img = pygame.image.load("images/exit_btn.png")
+font = pygame.font.SysFont("arianblack", 45)
+
 gameover_bg_img = pygame.image.load("images/gameover_bg.png")
 gameover_fl_img = pygame.image.load("images/gameover_fl.png")
-font = pygame.font.SysFont("arianblack", 45)
-text_color = (255, 255, 255)
+
 bg_music = "sounds/bg_sound.mp3"
 
 clock = pygame.time.Clock()
 canvas = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+text_color = (255, 255, 255)
 
 
 # achtergrondmuziek functie
@@ -56,27 +56,6 @@ def game_over_screen():
         pygame.display.flip()
 
 
-# Functie om het startscherm te tonen
-def start_screen():
-    canvas.blit(background_image, (0, 0))
-    play_text = "PRESS P TO PLAY"
-    quit_text = "PRESS Q TO QUIT"
-    start_btn = pygame.image.load("images/start_btn.png")
-    exit_btn = pygame.image.load("images/exit_btn.png")
-    play_game = font.render(play_text, True, text_color)
-    quit_game = font.render(quit_text, True, text_color)
-    canvas.blit(play_game, (365, 480))
-    canvas.blit(quit_game, (370, 650))
-    canvas.blit(start_btn, (360, 350))
-    canvas.blit(exit_btn, (380, 520))
-
-
-# Functie om het spel te starten
-def start_game():
-    canvas.blit(background_image2, (0, 0))
-    pygame.display.flip()
-
-
 # Functie om gebeurtenissen af te handelen
 def handle_events():
     halting = False
@@ -89,9 +68,10 @@ def handle_events():
                 halting = True
                 break
             if event.key == pygame.K_p:
-                start_game()
+                main.start_game_screen(canvas=canvas)
             if event.key == pygame.K_m:
-                start_screen()
+                main.start_screen(canvas=canvas, font=font, text_color=text_color)
+                pass
             if event.key == pygame.K_l:
                 game_over_screen()
 
@@ -99,7 +79,7 @@ def handle_events():
 
 
 background_music()
-start_screen()
+main.start_screen(canvas=canvas, font=font, text_color=text_color)
 # Dit is de "game loop"
 quit_program = False
 while not quit_program:
