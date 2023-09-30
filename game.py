@@ -37,9 +37,18 @@ def handle_events():
                 halting = True
                 break
             if event.key == pygame.K_p:
-                screen.start_game_screen(canvas=canvas)
+                screen.start_game_screen(
+                    canvas=canvas,
+                    font=font,
+                    SCREEN_HEIGHT=SCREEN_HEIGHT,
+                    SCREEN_WIDTH=SCREEN_WIDTH,
+                )
             if event.key == pygame.K_m:
-                screen.start_screen(canvas=canvas, font=font, text_color=text_color)
+                screen.start_screen(
+                    canvas=canvas,
+                    font=font,
+                    text_color=text_color,
+                )
                 pass
             if event.key == pygame.K_l:
                 screen.game_over_screen(

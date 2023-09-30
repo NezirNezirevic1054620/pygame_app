@@ -8,3 +8,4 @@ view/__pycache__/main.cpython-311.pyc
 .gitignore
 view/__pycache__/screen.cpython-311.pyc
 view/__pycache__/start_screen.cpython-311.pyc
+view/__pycache__/screen.cpython-39.pyc
