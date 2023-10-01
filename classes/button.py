@@ -4,5 +4,5 @@ class Button:
         self.x_position = x_position
         self.y_position = y_position
 
-    def draw(self):
-        pass
+    def draw(self, canvas):
+        canvas.blit(self.image)
