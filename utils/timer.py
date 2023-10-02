@@ -25,4 +25,10 @@ def game_timer(canvas, font, SCREEN_WIDTH, SCREEN_HEIGHT):
             secs = 0
             hours += 1
         text = font.render(f"{hours}:{mins}:{secs}", True, (255, 255, 255), (0, 0, 0))
-        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    quit()
+        pygame.display.flip()

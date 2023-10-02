@@ -2,6 +2,7 @@ import pygame
 
 # from utils import timer
 from utils import scrolling_background
+from utils import timer
 
 pygame.init()
 
@@ -31,7 +32,7 @@ def start_screen(canvas, font, text_color):
 
 # functie om de game te starten
 def start_game_screen(canvas, font, SCREEN_WIDTH, SCREEN_HEIGHT, text_color):
-    canvas.blit(background_ingame, (0, 0))
+    # canvas.blit(background_ingame, (0, 0))
     scrolling_background.scrolling_background(
         SCREEN_HEIGHT=SCREEN_HEIGHT,
         SCREEN_WIDTH=SCREEN_WIDTH,
@@ -41,10 +42,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, SCREEN_HEIGHT, text_color):
         font=font,
         text_color=text_color,
     )
-    # timer.game_timer(
-    #     canvas=canvas, font=font, SCREEN_WIDTH=SCREEN_WIDTH, SCREEN_HEIGHT=SCREEN_HEIGHT
-    # )
-    pygame.display.flip()
+    # pygame.display.flip()
 
 
 # Functie voor het game-over scherm
