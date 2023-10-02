@@ -1,14 +1,15 @@
 import pygame
-from utils import timer
-
+#from utils import timer
+from utils import scrolling_background
 pygame.init()
 
 background_image = pygame.image.load("images/pygame_start_bg.png")
-background_image2 = pygame.image.load("images/placeholder_img.png")
+background_ingame = pygame.image.load("images/background.png")
 start_btn_img = pygame.image.load("images/start_btn.png")
 exit_btn_img = pygame.image.load("images/exit_btn.png")
 gameover_bg_img = pygame.image.load("images/gameover_bg.png")
 gameover_fl_img = pygame.image.load("images/gameover_fl.png")
+GAME_SPEED = 60
 
 
 # Functie om het startscherm te tonen
@@ -28,10 +29,11 @@ def start_screen(canvas, font, text_color):
 
 # functie om de game te starten
 def start_game_screen(canvas, font, SCREEN_WIDTH, SCREEN_HEIGHT):
-    canvas.blit(background_image2, (0, 0))
-    timer.game_timer(
-        canvas=canvas, font=font, SCREEN_WIDTH=SCREEN_WIDTH, SCREEN_HEIGHT=SCREEN_HEIGHT
-    )
+    canvas.blit(background_ingame, (0, 0))
+    scrolling_background.scrolling_background(SCREEN_HEIGHT=SCREEN_HEIGHT, SCREEN_WIDTH=SCREEN_WIDTH, background_ingame=background_ingame, canvas=canvas, GAME_SPEED=GAME_SPEED)
+    # timer.game_timer(
+    #     canvas=canvas, font=font, SCREEN_WIDTH=SCREEN_WIDTH, SCREEN_HEIGHT=SCREEN_HEIGHT
+    # )
     pygame.display.flip()
 
 
