@@ -1,6 +1,8 @@
 import pygame
-#from utils import timer
+
+# from utils import timer
 from utils import scrolling_background
+
 pygame.init()
 
 background_image = pygame.image.load("images/pygame_start_bg.png")
@@ -28,9 +30,17 @@ def start_screen(canvas, font, text_color):
 
 
 # functie om de game te starten
-def start_game_screen(canvas, font, SCREEN_WIDTH, SCREEN_HEIGHT):
+def start_game_screen(canvas, font, SCREEN_WIDTH, SCREEN_HEIGHT, text_color):
     canvas.blit(background_ingame, (0, 0))
-    scrolling_background.scrolling_background(SCREEN_HEIGHT=SCREEN_HEIGHT, SCREEN_WIDTH=SCREEN_WIDTH, background_ingame=background_ingame, canvas=canvas, GAME_SPEED=GAME_SPEED)
+    scrolling_background.scrolling_background(
+        SCREEN_HEIGHT=SCREEN_HEIGHT,
+        SCREEN_WIDTH=SCREEN_WIDTH,
+        background_ingame=background_ingame,
+        canvas=canvas,
+        GAME_SPEED=GAME_SPEED,
+        font=font,
+        text_color=text_color,
+    )
     # timer.game_timer(
     #     canvas=canvas, font=font, SCREEN_WIDTH=SCREEN_WIDTH, SCREEN_HEIGHT=SCREEN_HEIGHT
     # )

@@ -1,12 +1,21 @@
 import pygame
 import math
+from view import screen
 
 pygame.init()
 
 clock = pygame.time.Clock()
 
 
-def scrolling_background(SCREEN_WIDTH, SCREEN_HEIGHT, background_ingame, GAME_SPEED, canvas):
+def scrolling_background(
+    SCREEN_WIDTH,
+    SCREEN_HEIGHT,
+    background_ingame,
+    GAME_SPEED,
+    canvas,
+    font,
+    text_color,
+):
     # Load image
     background = pygame.image.load("images/background.png").convert()
     background_width = background.get_width()
@@ -16,12 +25,10 @@ def scrolling_background(SCREEN_WIDTH, SCREEN_HEIGHT, background_ingame, GAME_SP
     scroll = 0
     screen_tiles = math.ceil(SCREEN_WIDTH / background_width) + 1
 
-
     # Game loop
     run = True
 
     while run:
-
         clock.tick(GAME_SPEED)
 
         # Draw scrolling background
@@ -35,13 +42,14 @@ def scrolling_background(SCREEN_WIDTH, SCREEN_HEIGHT, background_ingame, GAME_SP
         if abs(scroll) > background_width:
             scroll = 0
 
-
         # Event handler
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_m:
+                    # screen.start_screen(canvas=canvas, font=font, text_color=text_color)
+                    pass
+                if event.type == pygame.K_q:
+                    quit()
+                    break
 
-        pygame.display.update()
-    
-
-pygame.quit()
+        pygame.display.flip()

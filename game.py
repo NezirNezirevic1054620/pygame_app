@@ -42,6 +42,7 @@ def handle_events():
                     font=font,
                     SCREEN_HEIGHT=SCREEN_HEIGHT,
                     SCREEN_WIDTH=SCREEN_WIDTH,
+                    text_color=text_color,
                 )
             if event.key == pygame.K_m:
                 screen.start_screen(
