@@ -28,13 +28,13 @@ def scrolling_background(
     hours = 0
     mins = 0
     secs = 0
-    text = font.render(f"{hours}:{mins}:{secs}", True, (255, 255, 255), (0, 0, 0))
+    text = font.render(f"{secs}", True, (255, 255, 255), (0, 0, 0))
     textRect = text.get_rect()
     textRect.center = SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2
     clock = pygame.time.Clock()
 
     while run:
-        clock.tick(1)
+        clock.tick(GAME_SPEED)
 
         # Draw scrolling background
         for i in range(0, screen_tiles):
@@ -47,15 +47,17 @@ def scrolling_background(
         if abs(scroll) > background_width:
             scroll = 0
         secs += 1
-        canvas.blit(text, textRect)
-        if secs == 60:
+        if secs == 3600:
             secs = 0
             mins += 1
         if mins == 60:
             mins = 0
             secs = 0
             hours += 1
-        text = font.render(f"{hours}:{mins}:{secs}", True, (255, 255, 255), (0, 0, 0))
+        canvas.blit(text, textRect)
+        text = font.render(
+            f"{hours}:{mins}:{secs // 60}", True, (255, 255, 255), (0, 0, 0)
+        )
         pygame.display.flip()
 
         # Event handler
