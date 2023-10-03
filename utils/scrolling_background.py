@@ -1,11 +1,10 @@
 import pygame
 import math
 from view import screen
-from utils import timer
+
+# from utils import timer
 
 pygame.init()
-
-clock = pygame.time.Clock()
 
 
 def scrolling_background(
@@ -26,9 +25,16 @@ def scrolling_background(
     screen_tiles = math.ceil(SCREEN_WIDTH / background_width) + 1
     # Game loop
     run = True
+    hours = 0
+    mins = 0
+    secs = 0
+    text = font.render(f"{hours}:{mins}:{secs}", True, (255, 255, 255), (0, 0, 0))
+    textRect = text.get_rect()
+    textRect.center = SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2
+    clock = pygame.time.Clock()
 
     while run:
-        clock.tick(GAME_SPEED)
+        clock.tick(1)
 
         # Draw scrolling background
         for i in range(0, screen_tiles):
@@ -40,19 +46,22 @@ def scrolling_background(
         # Reset scroll
         if abs(scroll) > background_width:
             scroll = 0
-        timer.game_timer(
-            canvas=canvas,
-            font=font,
-            SCREEN_WIDTH=SCREEN_WIDTH,
-            SCREEN_HEIGHT=SCREEN_HEIGHT,
-        )
+        secs += 1
+        canvas.blit(text, textRect)
+        if secs == 60:
+            secs = 0
+            mins += 1
+        if mins == 60:
+            mins = 0
+            secs = 0
+            hours += 1
+        text = font.render(f"{hours}:{mins}:{secs}", True, (255, 255, 255), (0, 0, 0))
+        pygame.display.flip()
+
         # Event handler
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_m:
-                    # screen.start_screen(canvas=canvas, font=font, text_color=text_color)
-                    pass
-                if event.type == pygame.K_q:
-                    quit()
-                    break
-        pygame.display.flip()
+                    run = False
+                    screen.start_screen(canvas=canvas, font=font, text_color=text_color)
+                    pygame.display.flip()

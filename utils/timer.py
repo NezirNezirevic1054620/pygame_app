@@ -31,4 +31,4 @@ def game_timer(canvas, font, SCREEN_WIDTH, SCREEN_HEIGHT):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:
                     quit()
-        pygame.display.flip()
+        pygame.display.update()
