@@ -62,8 +62,17 @@ def scrolling_background(
 
         # Event handler
         for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
+            if event.type == pygame.QUIT:
+                halting = True
+                break
+            elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_m:
                     run = False
                     screen.start_screen(canvas=canvas, font=font, text_color=text_color)
                     pygame.display.flip()
+                if event.key == pygame.K_q:
+                    break
+                if event.key == pygame.K_p:
+                    run = False
+                if event.key == pygame.K_o:
+                    run = True
