@@ -27,7 +27,6 @@ def start_screen(canvas, font, text_color):
     canvas.blit(quit_game, (370, 650))
     canvas.blit(start_btn, (360, 350))
     canvas.blit(exit_btn, (380, 520))
-    pygame.display.flip()
 
 
 # functie om de game te starten
@@ -42,7 +41,6 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, SCREEN_HEIGHT, text_color):
         font=font,
         text_color=text_color,
     )
-    pygame.display.flip()
 
 
 # Functie voor het game-over scherm
@@ -61,11 +59,10 @@ def game_over_screen(canvas, font, text_color, SCREEN_WIDTH, SCREEN_HEIGHT):
     # initial positie van gameover_fl_img
     fl_x = 0
     fl_y = 0
-    
+
     # snelheid
     fl_speed_x = 2
     fl_speed_y = 1
-
 
     while True:
         for event in pygame.event.get():
@@ -88,7 +85,7 @@ def game_over_screen(canvas, font, text_color, SCREEN_WIDTH, SCREEN_HEIGHT):
         # als gameover_fl_img buiten het scherm gaat, keert deze terug
         if fl_x >= SCREEN_WIDTH:
             fl_x = 0
-        
+
         if fl_y >= SCREEN_HEIGHT:
             fl_y = 0
 

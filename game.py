@@ -44,13 +44,14 @@ def handle_events():
                     SCREEN_WIDTH=SCREEN_WIDTH,
                     text_color=text_color,
                 )
+                pygame.display.flip()
             if event.key == pygame.K_m:
                 screen.start_screen(
                     canvas=canvas,
                     font=font,
                     text_color=text_color,
                 )
-                pass
+                pygame.display.flip()
             if event.key == pygame.K_l:
                 screen.game_over_screen(
                     canvas=canvas,
