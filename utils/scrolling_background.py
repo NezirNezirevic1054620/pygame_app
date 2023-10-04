@@ -10,7 +10,6 @@ pygame.init()
 def scrolling_background(
     SCREEN_WIDTH,
     SCREEN_HEIGHT,
-    background_ingame,
     GAME_SPEED,
     canvas,
     font,
@@ -18,7 +17,6 @@ def scrolling_background(
 ):
     background = pygame.image.load("images/background.png").convert()
     background_width = background.get_width()
-    background_height = background.get_height()
 
     # Define game variables
     scroll = 0
@@ -29,8 +27,8 @@ def scrolling_background(
     mins = 0
     secs = 0
     text = font.render(f"{secs}", True, (255, 255, 255), (0, 0, 0))
-    textRect = text.get_rect()
-    textRect.center = SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2
+    text_rect = text.get_rect()
+    text_rect.center = SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2
     clock = pygame.time.Clock()
 
     while run:
@@ -54,7 +52,7 @@ def scrolling_background(
             mins = 0
             secs = 0
             hours += 1
-        canvas.blit(text, textRect)
+        canvas.blit(text, text_rect)
         text = font.render(
             f"{hours}:{mins}:{secs // 60}", True, (255, 255, 255), (0, 0, 0)
         )
@@ -63,7 +61,6 @@ def scrolling_background(
         # Event handler
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                halting = True
                 break
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_m:
