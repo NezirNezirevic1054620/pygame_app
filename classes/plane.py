@@ -1,3 +1,7 @@
+import pygame
+
+
+
 class Plane:
     
     def draw_plane():
@@ -6,3 +10,10 @@ class Plane:
         return plane
     
     def move_plane(y_pos, speed, fly):
+        if fly:
+            speed += gravity
+        else:
+            speed -= gravity
+        y_pos -= speed
+        return y_pos, speed
+    
