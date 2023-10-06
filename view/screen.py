@@ -61,8 +61,22 @@ def game_over_screen(canvas, font, text_color, SCREEN_WIDTH, SCREEN_HEIGHT):
     # snelheid
     fl_speed_x = 2
     fl_speed_y = 1
+    gameover=True
 
-    while True:
+    while gameover:
+        # beweeg gameover_fl_img
+        fl_x += fl_speed_x
+        fl_y += fl_speed_y
+        # als gameover_fl_img buiten het scherm gaat, keert deze terug
+        if fl_x >= SCREEN_WIDTH:
+            fl_x = 0
+        if fl_y >= SCREEN_HEIGHT:
+            fl_y = 0
+
+        canvas.blit(game_over_text, game_over_rect)
+        canvas.blit(restart_text, restart_rect)
+        canvas.blit(gameover_fl_img, (fl_x, fl_y))
+        pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -71,21 +85,8 @@ def game_over_screen(canvas, font, text_color, SCREEN_WIDTH, SCREEN_HEIGHT):
                 if event.key == pygame.K_r:
                     start_screen(canvas, font, text_color)
                     pygame.display.flip()
+                    gameover=False
 
-        canvas.blit(game_over_text, game_over_rect)
-        canvas.blit(restart_text, restart_rect)
-        pygame.display.flip()
 
-        # beweeg gameover_fl_img
-        fl_x += fl_speed_x
-        fl_y += fl_speed_y
-
-        # als gameover_fl_img buiten het scherm gaat, keert deze terug
-        if fl_x >= SCREEN_WIDTH:
-            fl_x = 0
-
-        if fl_y >= SCREEN_HEIGHT:
-            fl_y = 0
-
-        canvas.blit(gameover_fl_img, (fl_x, fl_y))
+  
         pygame.display.flip()
