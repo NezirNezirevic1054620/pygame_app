@@ -1,0 +1,8 @@
+class Plane:
+    
+    def draw_plane():
+        plane = pygame.draw.circle(screen, 'black',(plane_x, plane_y), 20)
+        screen.blit(friendly, (plane_x - 40, plane_y - 30))
+        return plane
+    
+    
