@@ -5,4 +5,4 @@ class Plane:
         screen.blit(friendly, (plane_x - 40, plane_y - 30))
         return plane
     
-    
+    def move_plane(y_pos, speed, fly):
