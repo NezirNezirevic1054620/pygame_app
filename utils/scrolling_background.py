@@ -2,15 +2,12 @@ import pygame
 import math
 from view import screen
 
-# from utils import timer
-
 pygame.init()
 
 
 def scrolling_background(
     SCREEN_WIDTH,
     SCREEN_HEIGHT,
-    background_ingame,
     GAME_SPEED,
     canvas,
     font,
@@ -18,7 +15,6 @@ def scrolling_background(
 ):
     background = pygame.image.load("images/background.png").convert()
     background_width = background.get_width()
-    background_height = background.get_height()
 
     # Define game variables
     scroll = 0
@@ -26,11 +22,9 @@ def scrolling_background(
     # Game loop
     run = True
     hours = 0
-    mins = 0
-    secs = 0
-    text = font.render(f"{secs}", True, (255, 255, 255), (0, 0, 0))
-    textRect = text.get_rect()
-    textRect.center = SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2
+    minutes = 0
+    seconds = 0
+    text = font.render(f"{hours}:{minutes}:{seconds}", True, (255, 255, 255), (0, 0, 0))
     clock = pygame.time.Clock()
 
     while run:
@@ -46,24 +40,39 @@ def scrolling_background(
         # Reset scroll
         if abs(scroll) > background_width:
             scroll = 0
-        secs += 1
-        if secs == 3600:
-            secs = 0
-            mins += 1
-        if mins == 60:
-            mins = 0
-            secs = 0
+        seconds += 1
+        if seconds == 3600:
+            seconds = 0
+            minutes += 1
+        if minutes == 60:
+            minutes = 0
+            seconds = 0
             hours += 1
-        canvas.blit(text, textRect)
+        canvas.blit(text, (470, 700))
         text = font.render(
-            f"{hours}:{mins}:{secs // 60}", True, (255, 255, 255), (0, 0, 0)
+            f"{hours}:{minutes}:{seconds // 60}", True, (255, 255, 255), (0, 0, 0)
         )
         pygame.display.flip()
 
         # Event handler
         for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
+            if event.type == pygame.QUIT:
+                break
+            elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_m:
                     run = False
                     screen.start_screen(canvas=canvas, font=font, text_color=text_color)
                     pygame.display.flip()
+                if event.key == pygame.K_q:
+                    quit()
+                if event.key == pygame.K_p:
+                    run = False
+                if event.key == pygame.K_r:
+                    run = False
+                    screen.game_over_screen(
+                        SCREEN_HEIGHT=SCREEN_HEIGHT,
+                        SCREEN_WIDTH=SCREEN_WIDTH,
+                        canvas=canvas,
+                        font=font,
+                        text_color=text_color
+                    )
