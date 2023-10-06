@@ -61,9 +61,9 @@ def game_over_screen(canvas, font, text_color, SCREEN_WIDTH, SCREEN_HEIGHT):
     # snelheid
     fl_speed_x = 2
     fl_speed_y = 1
-    gameover=True
+    game_over = True
 
-    while gameover:
+    while game_over:
         # beweeg gameover_fl_img
         fl_x += fl_speed_x
         fl_y += fl_speed_y
@@ -85,8 +85,6 @@ def game_over_screen(canvas, font, text_color, SCREEN_WIDTH, SCREEN_HEIGHT):
                 if event.key == pygame.K_r:
                     start_screen(canvas, font, text_color)
                     pygame.display.flip()
-                    gameover=False
+                    game_over = False
 
-
-  
         pygame.display.flip()

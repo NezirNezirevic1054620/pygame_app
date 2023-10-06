@@ -71,5 +71,12 @@ def scrolling_background(
                     break
                 if event.key == pygame.K_p:
                     run = False
-                if event.key == pygame.K_o:
-                    run = True
+                if event.key == pygame.K_r:
+                    run = False
+                    screen.game_over_screen(
+                        SCREEN_HEIGHT=SCREEN_HEIGHT,
+                        SCREEN_WIDTH=SCREEN_WIDTH,
+                        canvas=canvas,
+                        font=font,
+                        text_color=text_color
+                    )

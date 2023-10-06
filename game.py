@@ -52,7 +52,7 @@ def handle_events():
                     text_color=text_color,
                 )
                 pygame.display.flip()
-            if event.key == pygame.K_l:
+            if event.key == pygame.K_r:
                 game_over_screen(
                     canvas=canvas,
                     font=font,
