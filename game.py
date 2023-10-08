@@ -1,5 +1,4 @@
 import pygame
-# from pygame import mixer
 from view.screen import start_screen, start_game_screen, game_over_screen
 from utils.game_sound import background_music, press_button_sound, game_over_sound
 
@@ -11,19 +10,10 @@ BACKGROUND_COLOR = (0, 0, 0)
 pygame.display.set_caption("Fighter Jet-mania")
 font = pygame.font.SysFont("arianblack", 45)
 
-# bg_music = "sounds/bg_sound.mp3"
-
 clock = pygame.time.Clock()
 canvas = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 text_color = (255, 255, 255)
-
-
-# achtergrondmuziek functie
-# def background_music():
-#     pygame.mixer.init()
-#     mixer.music.load(bg_music)
-#     mixer.music.play(-1)
 
 
 # Functie om gebeurtenissen af te handelen
