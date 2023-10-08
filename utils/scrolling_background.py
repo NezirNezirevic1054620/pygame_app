@@ -1,18 +1,22 @@
 import pygame
 import math
-from view import screen
+from utils.game_sound import press_button_sound, game_over_sound
 
 pygame.init()
 
 
 def scrolling_background(
-    SCREEN_WIDTH,
-    SCREEN_HEIGHT,
-    GAME_SPEED,
-    canvas,
-    font,
-    text_color,
+        SCREEN_WIDTH,
+        SCREEN_HEIGHT,
+        GAME_SPEED,
+        canvas,
+        font,
+        text_color,
 ):
+    # module is geimpoorteerd binnen een functie en niet top level omdat er circular error
+    # plaatsvindt
+    from view.screen import start_screen, game_over_screen
+
     background = pygame.image.load("images/background.png").convert()
     background_width = background.get_width()
 
@@ -61,7 +65,8 @@ def scrolling_background(
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_m:
                     run = False
-                    screen.start_screen(canvas=canvas, font=font, text_color=text_color)
+                    press_button_sound()
+                    start_screen(canvas=canvas, font=font, text_color=text_color)
                     pygame.display.flip()
                 if event.key == pygame.K_q:
                     quit()
@@ -69,7 +74,9 @@ def scrolling_background(
                     run = False
                 if event.key == pygame.K_r:
                     run = False
-                    screen.game_over_screen(
+                    press_button_sound()
+                    game_over_sound()
+                    game_over_screen(
                         SCREEN_HEIGHT=SCREEN_HEIGHT,
                         SCREEN_WIDTH=SCREEN_WIDTH,
                         canvas=canvas,
