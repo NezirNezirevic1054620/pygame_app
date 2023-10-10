@@ -2,6 +2,7 @@ import pygame
 
 from utils.scrolling_background import scrolling_background
 from classes.button import Button
+from utils.game_sound import press_button_sound, background_music
 
 pygame.init()
 
@@ -13,9 +14,8 @@ gameover_bg_img = pygame.image.load("images/gameover_bg.png")
 gameover_fl_img = pygame.image.load("images/gameover_fl.png")
 GAME_SPEED = 60
 
+
 # Functie om het startscherm te tonen
-
-
 def start_screen(canvas, font, text_color):
     canvas.blit(background_image, (0, 0))
     start_button = Button(360, 350, start_btn_img, 1)
@@ -61,11 +61,12 @@ def game_over_screen(canvas, font, text_color, SCREEN_WIDTH, SCREEN_HEIGHT):
     fl_y = 0
 
     # snelheid
-    fl_speed_x = 2
-    fl_speed_y = 1
-    game_over = True
+    fl_speed_x = 3
+    fl_speed_y = 2
+    gameover = True
 
-    while game_over:
+    while gameover:
+        canvas.blit(gameover_bg_img, (0, 0))
         # beweeg gameover_fl_img
         fl_x += fl_speed_x
         fl_y += fl_speed_y
@@ -78,6 +79,7 @@ def game_over_screen(canvas, font, text_color, SCREEN_WIDTH, SCREEN_HEIGHT):
         canvas.blit(game_over_text, game_over_rect)
         canvas.blit(restart_text, restart_rect)
         canvas.blit(gameover_fl_img, (fl_x, fl_y))
+
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -85,8 +87,10 @@ def game_over_screen(canvas, font, text_color, SCREEN_WIDTH, SCREEN_HEIGHT):
                 quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_r:
+                    press_button_sound()
+                    background_music()
                     start_screen(canvas, font, text_color)
                     pygame.display.flip()
-                    game_over = False
+                    gameover = False
 
         pygame.display.flip()
