@@ -1,6 +1,6 @@
 import pygame
 from pygame import mixer
-from view import screen
+from view.screen import start_screen, start_game_screen, game_over_screen
 
 pygame.init()
 GAME_SPEED = 60
@@ -37,22 +37,23 @@ def handle_events():
                 halting = True
                 break
             if event.key == pygame.K_p:
-                screen.start_game_screen(
+                start_game_screen(
                     canvas=canvas,
                     font=font,
                     SCREEN_HEIGHT=SCREEN_HEIGHT,
                     SCREEN_WIDTH=SCREEN_WIDTH,
                     text_color=text_color,
                 )
+                pygame.display.flip()
             if event.key == pygame.K_m:
-                screen.start_screen(
+                start_screen(
                     canvas=canvas,
                     font=font,
                     text_color=text_color,
                 )
-                pass
-            if event.key == pygame.K_l:
-                screen.game_over_screen(
+                pygame.display.flip()
+            if event.key == pygame.K_r:
+                game_over_screen(
                     canvas=canvas,
                     font=font,
                     text_color=text_color,
@@ -64,7 +65,7 @@ def handle_events():
 
 
 background_music()
-screen.start_screen(canvas=canvas, font=font, text_color=text_color)
+start_screen(canvas=canvas, font=font, text_color=text_color)
 # Dit is de "game loop"
 quit_program = False
 while not quit_program:
