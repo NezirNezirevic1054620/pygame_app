@@ -80,7 +80,7 @@ def game_over_screen(canvas, font, text_color, SCREEN_WIDTH, SCREEN_HEIGHT):
         canvas.blit(restart_text, restart_rect)
         canvas.blit(gameover_skullimage_img, (skullimage_x, skullimage_y))
 
-        pygame.display.skullimageip()
+        pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -90,7 +90,7 @@ def game_over_screen(canvas, font, text_color, SCREEN_WIDTH, SCREEN_HEIGHT):
                     press_button_sound()
                     background_music()
                     start_screen(canvas, font, text_color)
-                    pygame.display.skullimageip()
+                    pygame.display.flip()
                     gameover = False
 
-        pygame.display.skullimageip()
+        pygame.display.flip()
