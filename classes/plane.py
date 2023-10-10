@@ -1,6 +1,11 @@
 import pygame
 
-
+plane_x = 100
+plane_y = 300
+flying = False 
+gravity = 0.1
+friendly = pygame.transform.scale(pygame.image.load('vliegtuigje2.png'), (80, 60))
+y_speed = 0
 
 class Plane:
     
