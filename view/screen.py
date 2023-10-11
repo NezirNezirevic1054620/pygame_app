@@ -11,7 +11,7 @@ background_ingame = pygame.image.load("images/background.png")
 start_btn_img = pygame.image.load("images/start_btn.png")
 exit_btn_img = pygame.image.load("images/exit_btn.png")
 gameover_bg_img = pygame.image.load("images/gameover_bg.png")
-gameover_fl_img = pygame.image.load("images/gameover_fl.png")
+gameover_skullimage_img = pygame.image.load("images/gameover_skullimage.png")
 GAME_SPEED = 60
 
 
@@ -56,29 +56,29 @@ def game_over_screen(canvas, font, text_color, SCREEN_WIDTH, SCREEN_HEIGHT):
         center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50)
     )
 
-    # initial positie van gameover_fl_img
-    fl_x = 0
-    fl_y = 0
+    # initial positie van gameover_skullimage_img
+    skullimage_x = 0
+    skullimage_y = 0
 
     # snelheid
-    fl_speed_x = 3
-    fl_speed_y = 2
+    skullimage_speed_x = 3
+    skullimage_speed_y = 2
     gameover = True
 
     while gameover:
         canvas.blit(gameover_bg_img, (0, 0))
-        # beweeg gameover_fl_img
-        fl_x += fl_speed_x
-        fl_y += fl_speed_y
-        # als gameover_fl_img buiten het scherm gaat, keert deze terug
-        if fl_x >= SCREEN_WIDTH:
-            fl_x = 0
-        if fl_y >= SCREEN_HEIGHT:
-            fl_y = 0
+        # beweeg gameover_skullimage_img
+        skullimage_x += skullimage_speed_x
+        skullimage_y += skullimage_speed_y
+        # als gameover_skullimage_img buiten het scherm gaat, keert deze terug
+        if skullimage_x >= SCREEN_WIDTH:
+            skullimage_x = 0
+        if skullimage_y >= SCREEN_HEIGHT:
+            skullimage_y = 0
 
         canvas.blit(game_over_text, game_over_rect)
         canvas.blit(restart_text, restart_rect)
-        canvas.blit(gameover_fl_img, (fl_x, fl_y))
+        canvas.blit(gameover_skullimage_img, (skullimage_x, skullimage_y))
 
         pygame.display.flip()
         for event in pygame.event.get():
