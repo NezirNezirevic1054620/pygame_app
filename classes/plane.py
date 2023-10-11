@@ -9,9 +9,12 @@ y_speed = 0
 
 class Plane:
     
-    def draw_plane():
-        plane = pygame.draw.circle(screen, 'black',(plane_x, plane_y), 20)
-        screen.blit(friendly, (plane_x - 40, plane_y - 30))
+    def __init__():
+        
+
+    def draw_plane(canvas):
+        plane = pygame.draw.circle(canvas, 'black',(plane_x, plane_y), 20)
+        canvas.blit(friendly, (plane_x - 40, plane_y - 30))
         return plane
     
     def move_plane(y_pos, speed, fly):
