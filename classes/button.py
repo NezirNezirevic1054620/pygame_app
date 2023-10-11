@@ -1,8 +1,20 @@
+import pygame
+
+
 class Button:
-    def __init__(self, image, x_position, y_position):
-        self.image = image
-        self.x_position = x_position
-        self.y_position = y_position
+    def __init__(self, x, y, image, scale):
+        width = image.get_width()
+        height = image.get_height()
+        self.image = pygame.transform.scale(
+            image, (int(width * scale), int(height * scale))
+        )
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
 
     def draw(self, canvas):
-        canvas.blit(self.image)
+        action = False
+
+        # draw button on screen
+        canvas.blit(self.image, (self.rect.x, self.rect.y))
+
+        return action
