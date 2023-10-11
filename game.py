@@ -1,6 +1,7 @@
 import pygame
-from view.screen import start_screen, start_game_screen, game_over_screen
+from view.screen import game_over_screen, start_screen
 from utils.game_sound import background_music, press_button_sound, game_over_sound
+from view.start_game_screen import start_game_screen
 
 pygame.init()
 GAME_SPEED = 60
@@ -32,9 +33,10 @@ def handle_events():
                 start_game_screen(
                     canvas=canvas,
                     font=font,
-                    SCREEN_HEIGHT=SCREEN_HEIGHT,
                     SCREEN_WIDTH=SCREEN_WIDTH,
-                    text_color=text_color,
+                    GAME_SPEED=GAME_SPEED,
+                    SCREEN_HEIGHT=SCREEN_HEIGHT,
+                    text_color=text_color
                 )
                 pygame.display.flip()
             if event.key == pygame.K_m:

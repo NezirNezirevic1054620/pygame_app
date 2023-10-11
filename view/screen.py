@@ -1,10 +1,18 @@
 import pygame
+# import random
 
-from utils.scrolling_background import scrolling_background
+# from utils.scrolling_background import scrolling_background
 from classes.button import Button
 from utils.game_sound import press_button_sound, background_music
 
 pygame.init()
+gravity = 0.1
+map_speed = 2
+map_rects = []
+rect_width = 10
+# total_rects = WIDTH // rect_width
+# active = True
+plane = pygame.transform.scale(pygame.image.load('images/vliegtuigje2.png'), (80, 60))
 
 background_image = pygame.image.load("images/pygame_start_bg.png")
 background_ingame = pygame.image.load("images/background.png")
@@ -31,16 +39,6 @@ def start_screen(canvas, font, text_color):
 
 
 # functie om de game te starten
-def start_game_screen(canvas, font, SCREEN_WIDTH, SCREEN_HEIGHT, text_color):
-    canvas.blit(background_ingame, (0, 0))
-    scrolling_background(
-        SCREEN_HEIGHT=SCREEN_HEIGHT,
-        SCREEN_WIDTH=SCREEN_WIDTH,
-        canvas=canvas,
-        GAME_SPEED=GAME_SPEED,
-        font=font,
-        text_color=text_color,
-    )
 
 
 # Functie voor het game-over scherm
