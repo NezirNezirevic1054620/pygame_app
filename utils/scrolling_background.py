@@ -15,7 +15,7 @@
 # ):
 #     # module is geimpoorteerd binnen een functie en niet top level omdat er circular error
 #     # plaatsvindt
-#     from view.screen import start_screen, game_over_screen
+#     from screens.screen import start_screen, game_over_screen
 #
 #     background = pygame.image.load("images/background.png").convert()
 #     background_width = background.get_width()
