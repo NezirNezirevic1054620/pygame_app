@@ -4,11 +4,11 @@ classes/__pycache__/button.cpython-311.pyc
 screens/__pycache__/main.cpython-311.pyc
 .gitignore
 screens/__pycache__/start_screen.cpython-311.pyc
-view/__pycache__/main.cpython-311.pyc
+screens/__pycache__/main.cpython-311.pyc
 .gitignore
-view/__pycache__/screen.cpython-311.pyc
-view/__pycache__/start_screen.cpython-311.pyc
-view/__pycache__/screen.cpython-39.pyc
+screens/__pycache__/screen.cpython-311.pyc
+screens/__pycache__/start_screen.cpython-311.pyc
+screens/__pycache__/screen.cpython-39.pyc
 utils/__pycache__/timer.cpython-39.pyc
 utils/__pycache__/scrolling_background.cpython-311.pyc
 utils/__pycache__/timer.cpython-311.pyc
