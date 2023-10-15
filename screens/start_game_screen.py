@@ -58,6 +58,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
         scroll -= 6
 
         # Reset scroll
+        # abs functie verkrijgt absolute waarde van een nummer
         if abs(scroll) > background_width:
             scroll = 0
 
@@ -101,6 +102,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                     run = False
                 if event.key == pygame.K_r:
                     run = False
+                    active = False
                     press_button_sound()
                     game_over_sound()
                     game_over_screen(
