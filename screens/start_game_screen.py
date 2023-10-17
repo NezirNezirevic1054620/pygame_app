@@ -1,12 +1,10 @@
 import pygame
 import math
 from utils.game_sound import press_button_sound, game_over_sound
+from screens.game_over_screen import game_over_screen
 
 pygame.init()
 gravity = 0.1
-map_speed = 2
-map_rects = []
-rect_width = 10
 plane = pygame.transform.scale(pygame.image.load('images/vliegtuigje2.png'), (150, 80))
 
 
@@ -29,19 +27,15 @@ def move_player(y_pos, speed, fly):
 
 # start game scherm
 def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, text_color):
-    from view.screen import start_screen, game_over_screen
     background = pygame.image.load("images/background.png").convert()
     background_width = background.get_width()
 
-    # vliegtuigplater variabelen
-    new_map = True
+    # vliegtuigplayer variabelen
     active = True
     player_x = 100
     player_y = 300
     flying = False
     y_speed = 0
-    score = 0
-    high_score = 0
 
     # scrolling background variabelen
     scroll = 0
@@ -64,6 +58,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
         scroll -= 6
 
         # Reset scroll
+        # abs functie verkrijgt absolute waarde van een nummer
         if abs(scroll) > background_width:
             scroll = 0
 
@@ -83,9 +78,8 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
             f"{hours}:{minutes}:{seconds // 60}", True, (255, 255, 255), (0, 0, 0)
         )
 
-        if new_map:
-            draw_player(canvas=canvas, player_x=player_x, player_y=player_y)
         if active:
+            draw_player(canvas=canvas, player_x=player_x, player_y=player_y)
             player_y, y_speed = move_player(player_y, y_speed, flying)
 
         for event in pygame.event.get():
@@ -94,15 +88,6 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
                     flying = True
-                if event.key == pygame.K_RETURN:
-                    if not active:
-                        new_map = True
-                        active = True
-                        y_speed = 0
-
-                        if score > high_score:
-                            high_score = score
-                        score = 0
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_UP:
                     flying = False
@@ -110,7 +95,6 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                 if event.key == pygame.K_m:
                     run = False
                     press_button_sound()
-                    start_screen(canvas=canvas, font=font, text_color=text_color)
                     pygame.display.flip()
                 if event.key == pygame.K_q:
                     quit()
@@ -118,6 +102,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                     run = False
                 if event.key == pygame.K_r:
                     run = False
+                    active = False
                     press_button_sound()
                     game_over_sound()
                     game_over_screen(
