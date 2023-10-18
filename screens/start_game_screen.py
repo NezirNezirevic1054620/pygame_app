@@ -2,6 +2,7 @@ import pygame
 import math
 from utils.game_sound import press_button_sound, game_over_sound
 from screens.game_over_screen import game_over_screen
+from screens.start_screen import start_screen
 
 pygame.init()
 gravity = 0.1
@@ -82,6 +83,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
             draw_player(canvas=canvas, player_x=player_x, player_y=player_y)
             player_y, y_speed = move_player(player_y, y_speed, flying)
 
+        pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -94,12 +96,11 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_m:
                     run = False
-                    press_button_sound()
+                    active = False
+                    start_screen(canvas=canvas, font=font, text_color=text_color)
                     pygame.display.flip()
                 if event.key == pygame.K_q:
                     quit()
-                if event.key == pygame.K_p:
-                    run = False
                 if event.key == pygame.K_r:
                     run = False
                     active = False
@@ -112,6 +113,3 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                         font=font,
                         text_color=text_color
                     )
-
-        pygame.display.flip()
-    pygame.quit()
