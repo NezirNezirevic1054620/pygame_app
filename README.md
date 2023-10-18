@@ -13,7 +13,7 @@ pip install -r requirements.txt
 
 Menuscherm
 
- ![game](https://github.com/Rac-Software-Development/wp1-2023-pygame-1e5-nlbl/assets/124694040/8e28c0dd-14ac-47b9-929f-bf4375c10201)
+![giphy](https://github.com/Rac-Software-Development/wp1-2023-pygame-1e5-nlbl/assets/124694040/5d963bd1-0985-4f57-8c1d-38bb0b14e467)
 
 Startscherm
 
