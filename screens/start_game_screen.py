@@ -97,7 +97,8 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                 if event.key == pygame.K_m:
                     run = False
                     active = False
-                    start_screen(canvas=canvas, font=font, text_color=text_color)
+                    press_button_sound()
+                    start_screen(canvas=canvas)
                     pygame.display.flip()
                 if event.key == pygame.K_q:
                     quit()
