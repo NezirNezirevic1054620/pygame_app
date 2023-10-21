@@ -1,9 +1,8 @@
 import pygame
-from utils.game_sound import background_music, press_button_sound, game_over_sound
+from screens.start_screen import start_screen 
 from screens.start_game_screen import start_game_screen
 from screens.game_over_screen import game_over_screen
-from screens.start_screen import start_screen
-
+from utils.game_sound import background_music, press_button_sound, game_over_sound
 pygame.init()
 GAME_SPEED = 60
 SCREEN_WIDTH = 1024
@@ -11,7 +10,6 @@ SCREEN_HEIGHT = 768
 BACKGROUND_COLOR = (0, 0, 0)
 pygame.display.set_caption("Fighter Jet-mania")
 font = pygame.font.SysFont("arianblack", 45)
-
 clock = pygame.time.Clock()
 canvas = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
@@ -34,10 +32,10 @@ def handle_events():
                 start_game_screen(
                     canvas=canvas,
                     font=font,
-                    SCREEN_WIDTH=SCREEN_WIDTH,
-                    GAME_SPEED=GAME_SPEED,
                     SCREEN_HEIGHT=SCREEN_HEIGHT,
-                    text_color=text_color
+                    SCREEN_WIDTH=SCREEN_WIDTH,
+                    text_color=text_color,
+                    GAME_SPEED=GAME_SPEED
                 )
                 pygame.display.flip()
             if event.key == pygame.K_m:
