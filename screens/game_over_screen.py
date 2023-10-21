@@ -52,7 +52,7 @@ def game_over_screen(canvas, font, text_color, SCREEN_WIDTH, SCREEN_HEIGHT):
                 if event.key == pygame.K_r:
                     press_button_sound()
                     background_music()
-                    start_screen(canvas=canvas, font=font, text_color=text_color)
+                    start_screen(canvas=canvas)
                     pygame.display.flip()
                     gameover = False
 
