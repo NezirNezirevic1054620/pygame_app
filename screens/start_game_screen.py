@@ -47,7 +47,8 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
     seconds = 0
     text = font.render(f"{hours}:{minutes}:{seconds}", True, (255, 255, 255), (0, 0, 0))
     clock = pygame.time.Clock()
-
+    score = 0
+    score_counter = font.render(f'Score: {score}', True, (255, 255, 255))
     run = True
     while run:
         clock.tick(GAME_SPEED)
@@ -74,10 +75,14 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
             hours += 1
 
         canvas.blit(text, (470, 700))
-
+        canvas.blit(score_counter, (10, 10))
         text = font.render(
             f"{hours}:{minutes}:{seconds // 60}", True, (255, 255, 255), (0, 0, 0)
         )
+
+        # Score
+        score += 100
+        score_counter = font.render(f'Score: {score // 60}', True, (255, 255, 255))
 
         if active:
             draw_player(canvas=canvas, player_x=player_x, player_y=player_y)
