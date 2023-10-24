@@ -4,33 +4,15 @@ import random
 from utils.game_sound import press_button_sound, game_over_sound
 from screens.game_over_screen import game_over_screen
 from screens.start_screen import start_screen
+from classes.player import Player
 
 pygame.init()
 gravity = 0.1
-plane = pygame.transform.scale(pygame.image.load(
-    'images/vliegtuigje2.png'), (150, 80))
+plane = pygame.image.load("images/vliegtuigje2.png")
 enemy_image = pygame.transform.scale(
     pygame.image.load("images/vliegtuigje3.png"), (150, 80))
 
 ENEMY_WIDTH, ENEMY_HEIGHT = 150, 80
-
-# functie om vliegtuig te drawen
-
-
-def draw_player(canvas, player_x, player_y):
-    player = pygame.draw.circle(canvas, 'black', (player_x, player_y), 0)
-    canvas.blit(plane, (player_x - 40, player_y - 30))
-    return player
-
-
-# functie om vliegtuig bewegend te krijgen
-def move_player(y_pos, speed, fly):
-    if fly:
-        speed += gravity
-    else:
-        speed -= gravity
-    y_pos -= speed
-    return y_pos, speed
 
 
 # functie om random enemy positie te genereren
@@ -52,11 +34,8 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
     background_width = background.get_width()
 
     # vliegtuigplayer variabelen
-    active = True
     player_x = 100
     player_y = 300
-    flying = False
-    y_speed = 0
 
     # scrolling background variabelen
     scroll = 0
@@ -76,6 +55,9 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
     score = 0
     score_counter = font.render(f'Score: {score}', True, (255, 255, 255))
     run = True
+    all_sprites = pygame.sprite.Group()
+    player = Player(plane, 0.3)
+    all_sprites.add(player)
     while run:
         clock.tick(GAME_SPEED)
 
@@ -113,51 +95,42 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
             f'Score: {score // 60}', True, (255, 255, 255))
 
         # Generate enemies
-        enemy_spawn_timer += 1
-        if enemy_spawn_timer >= 5 * GAME_SPEED:
-            enemy_spawn_timer = 0
-            enemy_x, enemy_y = generate_enemy_position(SCREEN_WIDTH)
-            enemies.append([enemy_x, enemy_y])
-
-        for enemy_x, enemy_y in enemies:
-            draw_enemy(canvas, enemy_x, enemy_y)
-
-            # Update enemy positions here
-            enemy_x -= 10
-
-            # Check for collision
-            if enemy_x < player_x + 150 and enemy_x + 150 > player_x and enemy_y < player_y + 80 and enemy_y + 80 > player_y:
-                # Handle collision
-                run = False
-                active = False
-                press_button_sound()
-                game_over_sound()
-                game_over_screen(
-                    SCREEN_HEIGHT=SCREEN_HEIGHT,
-                    SCREEN_WIDTH=SCREEN_WIDTH,
-                    canvas=canvas,
-                    font=font,
-                    text_color=text_color
-                )
-
-        if active:
-            draw_player(canvas=canvas, player_x=player_x, player_y=player_y)
-            player_y, y_speed = move_player(player_y, y_speed, flying)
-
+        # enemy_spawn_timer += 1
+        # if enemy_spawn_timer >= 5 * GAME_SPEED:
+        #     enemy_spawn_timer = 0
+        #     enemy_x, enemy_y = generate_enemy_position(SCREEN_WIDTH)
+        #     enemies.append([enemy_x, enemy_y])
+        #
+        # for enemy_x, enemy_y in enemies:
+        #     draw_enemy(canvas, enemy_x, enemy_y)
+        #
+        #     # Update enemy positions here
+        #     enemy_x -= 10
+        #
+        #     # Check for collision
+        #     if enemy_x < player_x + 150 and enemy_x + 150 > player_x and enemy_
+        #     y < player_y + 80 and enemy_y + 80 > player_y:
+        #         # Handle collision
+        #         run = False
+        #         active = False
+        #         press_button_sound()
+        #         game_over_sound()
+        #         game_over_screen(
+        #             SCREEN_HEIGHT=SCREEN_HEIGHT,
+        #             SCREEN_WIDTH=SCREEN_WIDTH,
+        #             canvas=canvas,
+        #             font=font,
+        #             text_color=text_color
+        #         )
+        all_sprites.update()
+        all_sprites.draw(canvas)
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
-                    flying = True
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_UP:
-                    flying = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_m:
                     run = False
-                    active = False
                     press_button_sound()
                     start_screen(canvas=canvas)
                     pygame.display.flip()
@@ -165,7 +138,6 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                     quit()
                 if event.key == pygame.K_r:
                     run = False
-                    active = False
                     press_button_sound()
                     game_over_sound()
                     game_over_screen(
