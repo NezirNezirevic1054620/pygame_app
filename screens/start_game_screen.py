@@ -19,9 +19,13 @@ ENEMY_WIDTH, ENEMY_HEIGHT = 150, 80
 def generate_enemy_position(SCREEN_WIDTH, SCREEN_HEIGHT):
     enemy_x = SCREEN_WIDTH
     enemy_y = random.randint(0, SCREEN_HEIGHT - ENEMY_HEIGHT)
-
+    
     return enemy_x, enemy_y
-
+  
+  
+def draw_obstacle(canvas, obstacle_x, obstacle_y):
+    obstacle_rect = meteoriet.get_rect()
+    canvas.blit(meteoriet, obstacle_x, obstacle_y)
 
 # functie om enemy te drawen
 def draw_enemy(canvas, enemy_x, enemy_y):
@@ -122,6 +126,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                     font=font,
                     text_color=text_color
                 )
+                
         all_sprites.update()
         all_sprites.draw(canvas)
         pygame.display.flip()
