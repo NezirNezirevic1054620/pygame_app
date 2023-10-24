@@ -117,7 +117,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                 updated_enemies.append([enemy_x, enemy_y])
 
             # Check for collision
-            if enemy_x < player_x + 150 and enemy_x + ENEMY_WIDTH > player_x and enemy_y < player_y + 80 and enemy_y + ENEMY_HEIGHT > player_y:
+            if player.rect.colliderect(pygame.Rect(enemy_x, enemy_y, ENEMY_WIDTH, ENEMY_HEIGHT)):
                 # Handle collision
                 run = False
                 active = False
