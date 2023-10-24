@@ -27,7 +27,6 @@ def draw_obstacle(canvas, obstacle_x, obstacle_y):
     obstacle_rect = meteoriet.get_rect()
     canvas.blit(meteoriet, obstacle_x, obstacle_y)
 
-
 # functie om enemy te drawen
 def draw_enemy(canvas, enemy_x, enemy_y):
     canvas.blit(enemy_image, (enemy_x, enemy_y))
@@ -100,33 +99,34 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
             f'Score: {score // 60}', True, (255, 255, 255))
 
         # Generate enemies
-        # enemy_spawn_timer += 1
-        # if enemy_spawn_timer >= 5 * GAME_SPEED:
-        #     enemy_spawn_timer = 0
-        #     enemy_x, enemy_y = generate_enemy_position(SCREEN_WIDTH)
-        #     enemies.append([enemy_x, enemy_y])
-        #
-        # for enemy_x, enemy_y in enemies:
-        #     draw_enemy(canvas, enemy_x, enemy_y)
-        #
-        #     # Update enemy positions here
-        #     enemy_x -= 10
-        #
-        #     # Check for collision
-        #     if enemy_x < player_x + 150 and enemy_x + 150 > player_x and enemy_
-        #     y < player_y + 80 and enemy_y + 80 > player_y:
-        #         # Handle collision
-        #         run = False
-        #         active = False
-        #         press_button_sound()
-        #         game_over_sound()
-        #         game_over_screen(
-        #             SCREEN_HEIGHT=SCREEN_HEIGHT,
-        #             SCREEN_WIDTH=SCREEN_WIDTH,
-        #             canvas=canvas,
-        #             font=font,
-        #             text_color=text_color
-        #         )
+        enemy_spawn_timer += 1
+        if enemy_spawn_timer >= 5 * GAME_SPEED:
+            enemy_spawn_timer = 0
+            enemy_x, enemy_y = generate_enemy_position(
+                SCREEN_WIDTH, SCREEN_HEIGHT)
+            enemies.append([enemy_x, enemy_y])
+
+        for enemy_x, enemy_y in enemies:
+            draw_enemy(canvas, enemy_x, enemy_y)
+
+            # Update enemy positions here
+            enemy_x -= 10
+
+            # Check for collision
+            if enemy_x < player_x + 150 and enemy_x + 150 > player_x and enemy_y < player_y + 80 and enemy_y + 80 > player_y:
+                # Handle collision
+                run = False
+                active = False
+                press_button_sound()
+                game_over_sound()
+                game_over_screen(
+                    SCREEN_HEIGHT=SCREEN_HEIGHT,
+                    SCREEN_WIDTH=SCREEN_WIDTH,
+                    canvas=canvas,
+                    font=font,
+                    text_color=text_color
+                )
+                
         all_sprites.update()
         all_sprites.draw(canvas)
         pygame.display.flip()
