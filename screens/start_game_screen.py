@@ -15,8 +15,6 @@ enemy_image = pygame.transform.scale(
 ENEMY_WIDTH, ENEMY_HEIGHT = 150, 80
 
 # functie om vliegtuig te drawen
-
-
 def draw_player(canvas, player_x, player_y):
     player = pygame.draw.circle(canvas, 'black', (player_x, player_y), 0)
     canvas.blit(plane, (player_x - 40, player_y - 30))
@@ -36,7 +34,7 @@ def move_player(y_pos, speed, fly):
 # functie om random enemy positie te genereren
 def generate_enemy_position(SCREEN_WIDTH, SCREEN_HEIGHT):
     enemy_x = SCREEN_WIDTH
-    enemy_y = random.randint(50, SCREEN_HEIGHT - ENEMY_HEIGHT)
+    enemy_y = random.randint(0, SCREEN_HEIGHT - ENEMY_HEIGHT)
 
     return enemy_x, enemy_y
 
