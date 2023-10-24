@@ -18,7 +18,7 @@ ENEMY_WIDTH, ENEMY_HEIGHT = 150, 80
 # functie om random enemy positie te genereren
 def generate_enemy_position(SCREEN_WIDTH, SCREEN_HEIGHT):
     enemy_x = SCREEN_WIDTH
-    enemy_y = random.randint(50, SCREEN_HEIGHT - ENEMY_HEIGHT)
+    enemy_y = random.randint(0, SCREEN_HEIGHT - ENEMY_HEIGHT)
 
     return enemy_x, enemy_y
 
