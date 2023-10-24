@@ -14,6 +14,6 @@ class Text:
 
     def draw(self, canvas):
         text = self.font.render(self.text, True, self.text_color)
-        action = canvas.blit(text, (self.x, self.y))
+        draw_text = canvas.blit(text, (self.x, self.y))
 
-        return action
+        return draw_text

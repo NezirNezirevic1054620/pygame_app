@@ -42,9 +42,7 @@ def handle_events():
                 pygame.display.flip()
             if event.key == pygame.K_m:
                 press_button_sound()
-                start_screen(
-
-                )
+                start_screen(canvas=canvas)
                 pygame.display.flip()
             if event.key == pygame.K_r:
                 press_button_sound()

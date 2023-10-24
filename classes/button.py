@@ -12,9 +12,7 @@ class Button:
         self.rect.topleft = (x, y)
 
     def draw(self, canvas):
-        action = False
-
         # draw button on screen
-        canvas.blit(self.image, (self.rect.x, self.rect.y))
+        draw_button = canvas.blit(self.image, (self.rect.x, self.rect.y))
 
-        return action
+        return draw_button
