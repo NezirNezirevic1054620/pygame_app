@@ -13,6 +13,7 @@ enemy_image = pygame.transform.scale(
     pygame.image.load("images/vliegtuigje3.png"), (150, 80))
 
 ENEMY_WIDTH, ENEMY_HEIGHT = 150, 80
+meteoriet = pygame.image.load('images/meteoriet.png')
 
 
 # functie om random enemy positie te genereren
@@ -27,6 +28,7 @@ def draw_obstacle(canvas, obstacle_x, obstacle_y):
     obstacle_rect = meteoriet.get_rect()
     canvas.blit(meteoriet, obstacle_x, obstacle_y)
 
+
 # functie om enemy te drawen
 
 
@@ -38,10 +40,6 @@ def draw_enemy(canvas, enemy_x, enemy_y):
 def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, text_color):
     background = pygame.image.load("images/background.png").convert()
     background_width = background.get_width()
-
-    # vliegtuigplayer variabelen
-    player_x = 100
-    player_y = 300
 
     # scrolling background variabelen
     scroll = 0
@@ -91,8 +89,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
         canvas.blit(text, (470, 700))
         canvas.blit(score_counter, (10, 10))
         text = font.render(
-            f"{hours}:{minutes}:{seconds // 60}", True, (255,
-                                                         255, 255), (0, 0, 0)
+            f"{hours}:{minutes}:{seconds // 60}", True, (255, 255, 255), (0, 0, 0)
         )
 
         # Score
@@ -120,7 +117,6 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
             if player.rect.colliderect(pygame.Rect(enemy_x, enemy_y, ENEMY_WIDTH, ENEMY_HEIGHT)):
                 # Handle collision
                 run = False
-                active = False
                 press_button_sound()
                 game_over_sound()
                 game_over_screen(
