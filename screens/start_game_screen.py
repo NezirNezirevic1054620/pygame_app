@@ -19,15 +19,17 @@ ENEMY_WIDTH, ENEMY_HEIGHT = 150, 80
 def generate_enemy_position(SCREEN_WIDTH, SCREEN_HEIGHT):
     enemy_x = SCREEN_WIDTH
     enemy_y = random.randint(0, SCREEN_HEIGHT - ENEMY_HEIGHT)
-    
+
     return enemy_x, enemy_y
-  
-  
+
+
 def draw_obstacle(canvas, obstacle_x, obstacle_y):
     obstacle_rect = meteoriet.get_rect()
     canvas.blit(meteoriet, obstacle_x, obstacle_y)
 
 # functie om enemy te drawen
+
+
 def draw_enemy(canvas, enemy_x, enemy_y):
     canvas.blit(enemy_image, (enemy_x, enemy_y))
 
@@ -106,14 +108,16 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                 SCREEN_WIDTH, SCREEN_HEIGHT)
             enemies.append([enemy_x, enemy_y])
 
+        updated_enemies = []
         for enemy_x, enemy_y in enemies:
-            draw_enemy(canvas, enemy_x, enemy_y)
+            enemy_x -= 8  # beweegt naar links
 
-            # Update enemy positions here
-            enemy_x -= 10
+            if enemy_x + ENEMY_WIDTH > 0:
+                draw_enemy(canvas, enemy_x, enemy_y)
+                updated_enemies.append([enemy_x, enemy_y])
 
             # Check for collision
-            if enemy_x < player_x + 150 and enemy_x + 150 > player_x and enemy_y < player_y + 80 and enemy_y + 80 > player_y:
+            if enemy_x < player_x + 150 and enemy_x + ENEMY_WIDTH > player_x and enemy_y < player_y + 80 and enemy_y + ENEMY_HEIGHT > player_y:
                 # Handle collision
                 run = False
                 active = False
@@ -126,7 +130,9 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                     font=font,
                     text_color=text_color
                 )
-                
+
+        enemies = updated_enemies
+
         all_sprites.update()
         all_sprites.draw(canvas)
         pygame.display.flip()
