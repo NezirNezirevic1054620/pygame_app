@@ -1,5 +1,5 @@
 import pygame
-import math
+import math, random
 from utils.game_sound import press_button_sound, game_over_sound
 from screens.game_over_screen import game_over_screen
 from screens.start_screen import start_screen
@@ -7,13 +7,17 @@ from screens.start_screen import start_screen
 pygame.init()
 gravity = 0.1
 plane = pygame.transform.scale(pygame.image.load('images/vliegtuigje2.png'), (150, 80))
-
+meteoriet = pygame.image.load('images/meteoriet.png')
 
 # functie om vliegtuig te drawen
 def draw_player(canvas, player_x, player_y):
     player = pygame.draw.circle(canvas, 'black', (player_x, player_y), 0)
     canvas.blit(plane, (player_x - 40, player_y - 30))
     return player
+
+def draw_obstacle(canvas, obstacle_x, obstacle_y):
+    obstacle_rect = meteoriet.get_rect()
+    canvas.blit(meteoriet, obstacle_x, obstacle_y)
 
 
 # functie om vliegtuig bewegend te krijgen
