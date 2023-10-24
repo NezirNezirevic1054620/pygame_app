@@ -1,6 +1,8 @@
 import pygame
 import math
 import random
+
+from classes.bullet import Bullet
 from utils.game_sound import press_button_sound, game_over_sound
 from screens.game_over_screen import game_over_screen
 from screens.start_screen import start_screen
@@ -60,8 +62,11 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
     score_counter = font.render(f'Score: {score}', True, (255, 255, 255))
     run = True
     all_sprites = pygame.sprite.Group()
+    bullets = pygame.sprite.Group()
+
     player = Player(plane, 0.3)
     all_sprites.add(player)
+
     while run:
         clock.tick(GAME_SPEED)
 
@@ -129,13 +134,15 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
 
         enemies = updated_enemies
 
-        all_sprites.update()
         all_sprites.draw(canvas)
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
             elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    player.shoot(all_sprites=all_sprites, bullets=bullets)
+                    all_sprites.update()
                 if event.key == pygame.K_m:
                     run = False
                     press_button_sound()
@@ -154,3 +161,4 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                         font=font,
                         text_color=text_color
                     )
+        all_sprites.update()
