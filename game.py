@@ -42,11 +42,7 @@ def handle_events():
                 pygame.display.flip()
             if event.key == pygame.K_m:
                 press_button_sound()
-                start_screen(
-                    canvas=canvas,
-                    font=font,
-                    text_color=text_color,
-                )
+                start_screen(canvas=canvas)
                 pygame.display.flip()
             if event.key == pygame.K_r:
                 press_button_sound()
@@ -63,7 +59,7 @@ def handle_events():
 
 
 background_music()
-start_screen(canvas=canvas, font=font, text_color=text_color)
+start_screen(canvas=canvas)
 # Dit is de "game loop"
 quit_program = False
 while not quit_program:
