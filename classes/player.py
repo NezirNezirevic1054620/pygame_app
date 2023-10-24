@@ -1,4 +1,5 @@
 import pygame
+from classes.bullet import Bullet
 
 pygame.init()
 
@@ -6,6 +7,8 @@ pygame.init()
 class Player(pygame.sprite.Sprite):
     HEIGHT = 768
     WIDTH = 1024
+
+    bullet_image = pygame.image.load("images/rocket.png")
 
     def __init__(self, image, scale):
         super().__init__()
@@ -32,3 +35,8 @@ class Player(pygame.sprite.Sprite):
             self.rect.bottom = Player.HEIGHT
         if self.rect.top < 0:
             self.rect.top = 0
+
+    def shoot(self, all_sprites, bullets):
+        bullet = Bullet(self.rect.centerx, self.rect.top, self.bullet_image, 0.3)
+        all_sprites.add(bullet)
+        bullets.add(bullet)
