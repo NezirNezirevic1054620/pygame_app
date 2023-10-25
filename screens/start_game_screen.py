@@ -1,6 +1,8 @@
 import pygame
 import math
 import random
+
+from classes.bullet import Bullet
 from utils.game_sound import press_button_sound, game_over_sound
 from screens.game_over_screen import game_over_screen
 from screens.start_screen import start_screen
@@ -13,6 +15,7 @@ enemy_image = pygame.transform.scale(
     pygame.image.load("images/vliegtuigje3.png"), (150, 80))
 
 ENEMY_WIDTH, ENEMY_HEIGHT = 150, 80
+meteoriet = pygame.image.load('images/meteoriet.png')
 
 
 # functie om random enemy positie te genereren
@@ -23,7 +26,14 @@ def generate_enemy_position(SCREEN_WIDTH, SCREEN_HEIGHT):
     return enemy_x, enemy_y
 
 
+def draw_obstacle(canvas, obstacle_x, obstacle_y):
+    obstacle_rect = meteoriet.get_rect()
+    canvas.blit(meteoriet, obstacle_x, obstacle_y)
+
+
 # functie om enemy te drawen
+
+
 def draw_enemy(canvas, enemy_x, enemy_y):
     canvas.blit(enemy_image, (enemy_x, enemy_y))
 
@@ -32,10 +42,6 @@ def draw_enemy(canvas, enemy_x, enemy_y):
 def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, text_color):
     background = pygame.image.load("images/background.png").convert()
     background_width = background.get_width()
-
-    # vliegtuigplayer variabelen
-    player_x = 100
-    player_y = 300
 
     # scrolling background variabelen
     scroll = 0
@@ -56,8 +62,11 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
     score_counter = font.render(f'Score: {score}', True, (255, 255, 255))
     run = True
     all_sprites = pygame.sprite.Group()
+    bullets = pygame.sprite.Group()
+
     player = Player(plane, 0.3)
     all_sprites.add(player)
+
     while run:
         clock.tick(GAME_SPEED)
 
@@ -85,8 +94,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
         canvas.blit(text, (470, 700))
         canvas.blit(score_counter, (10, 10))
         text = font.render(
-            f"{hours}:{minutes}:{seconds // 60}", True, (255,
-                                                         255, 255), (0, 0, 0)
+            f"{hours}:{minutes}:{seconds // 60}", True, (255, 255, 255), (0, 0, 0)
         )
 
         # Score
@@ -95,40 +103,46 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
             f'Score: {score // 60}', True, (255, 255, 255))
 
         # Generate enemies
-        # enemy_spawn_timer += 1
-        # if enemy_spawn_timer >= 5 * GAME_SPEED:
-        #     enemy_spawn_timer = 0
-        #     enemy_x, enemy_y = generate_enemy_position(SCREEN_WIDTH)
-        #     enemies.append([enemy_x, enemy_y])
-        #
-        # for enemy_x, enemy_y in enemies:
-        #     draw_enemy(canvas, enemy_x, enemy_y)
-        #
-        #     # Update enemy positions here
-        #     enemy_x -= 10
-        #
-        #     # Check for collision
-        #     if enemy_x < player_x + 150 and enemy_x + 150 > player_x and enemy_
-        #     y < player_y + 80 and enemy_y + 80 > player_y:
-        #         # Handle collision
-        #         run = False
-        #         active = False
-        #         press_button_sound()
-        #         game_over_sound()
-        #         game_over_screen(
-        #             SCREEN_HEIGHT=SCREEN_HEIGHT,
-        #             SCREEN_WIDTH=SCREEN_WIDTH,
-        #             canvas=canvas,
-        #             font=font,
-        #             text_color=text_color
-        #         )
-        all_sprites.update()
+        enemy_spawn_timer += 1
+        if enemy_spawn_timer >= 5 * GAME_SPEED:
+            enemy_spawn_timer = 0
+            enemy_x, enemy_y = generate_enemy_position(
+                SCREEN_WIDTH, SCREEN_HEIGHT)
+            enemies.append([enemy_x, enemy_y])
+
+        updated_enemies = []
+        for enemy_x, enemy_y in enemies:
+            enemy_x -= 8  # beweegt naar links
+
+            if enemy_x + ENEMY_WIDTH > 0:
+                draw_enemy(canvas, enemy_x, enemy_y)
+                updated_enemies.append([enemy_x, enemy_y])
+
+            # Check for collision
+            if player.rect.colliderect(pygame.Rect(enemy_x, enemy_y, ENEMY_WIDTH, ENEMY_HEIGHT)):
+                # Handle collision
+                run = False
+                press_button_sound()
+                game_over_sound()
+                game_over_screen(
+                    SCREEN_HEIGHT=SCREEN_HEIGHT,
+                    SCREEN_WIDTH=SCREEN_WIDTH,
+                    canvas=canvas,
+                    font=font,
+                    text_color=text_color
+                )
+
+        enemies = updated_enemies
+
         all_sprites.draw(canvas)
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
             elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    player.shoot(all_sprites=all_sprites, bullets=bullets)
+                    all_sprites.update()
                 if event.key == pygame.K_m:
                     run = False
                     press_button_sound()
@@ -147,3 +161,4 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                         font=font,
                         text_color=text_color
                     )
+        all_sprites.update()
