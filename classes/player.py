@@ -20,7 +20,7 @@ class Player(pygame.sprite.Sprite):
         self.image.set_colorkey(None)
         self.rect = self.image.get_rect()
         self.rect.centerx = 150
-        self.rect.bottom = Player.HEIGHT
+        self.rect.bottom = Player.HEIGHT / 2
         self.plane_y_position = 0
 
     def update(self):
