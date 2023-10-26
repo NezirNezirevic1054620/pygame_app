@@ -1,5 +1,5 @@
 import pygame
-from screens.start_screen import start_screen 
+from screens.start_screen import start_screen
 from screens.start_game_screen import start_game_screen
 from screens.game_over_screen import game_over_screen
 from utils.game_sound import background_music, press_button_sound, game_over_sound

@@ -94,7 +94,8 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
         canvas.blit(text, (470, 700))
         canvas.blit(score_counter, (10, 10))
         text = font.render(
-            f"{hours}:{minutes}:{seconds // 60}", True, (255, 255, 255), (0, 0, 0)
+            f"{hours}:{minutes}:{seconds // 60}", True, (255,
+                                                         255, 255), (0, 0, 0)
         )
 
         # Score
@@ -131,8 +132,20 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                     font=font,
                     text_color=text_color
                 )
-
+                bullets.empty()
+                enemies.clear()
+                player.remove(all_sprites)
         enemies = updated_enemies
+
+        for bullet in bullets:
+            # Check for collision
+            for enemy_x, enemy_y in enemies:
+                if bullet.rect.colliderect(pygame.Rect(enemy_x, enemy_y, ENEMY_WIDTH, ENEMY_HEIGHT)):
+                    # Handle collision
+                    enemies.remove([enemy_x, enemy_y])
+                    score += 100
+                    score_counter = font.render(
+                        f'Score: {score // 60}', True, (255, 255, 255))
 
         all_sprites.draw(canvas)
         pygame.display.flip()
