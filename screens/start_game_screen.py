@@ -7,6 +7,7 @@ from utils.game_sound import press_button_sound, game_over_sound
 from screens.game_over_screen import game_over_screen
 from screens.start_screen import start_screen
 from classes.player import Player
+from classes.json_controller import JsonController
 
 pygame.init()
 gravity = 0.1
@@ -16,6 +17,7 @@ enemy_image = pygame.transform.scale(
 
 ENEMY_WIDTH, ENEMY_HEIGHT = 150, 80
 meteoriet = pygame.image.load('images/meteoriet.png')
+score_json = "data/score.json"
 
 
 # functie om random enemy positie te genereren
@@ -66,6 +68,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
 
     player = Player(plane, 0.3)
     all_sprites.add(player)
+    json = JsonController(score_json, "w")
 
     while run:
         clock.tick(GAME_SPEED)
@@ -122,6 +125,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
             # Check for collision
             if player.rect.colliderect(pygame.Rect(enemy_x, enemy_y, ENEMY_WIDTH, ENEMY_HEIGHT)):
                 # Handle collision
+                json.write_data(score=score)
                 run = False
                 press_button_sound()
                 game_over_sound()
@@ -136,6 +140,16 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                 enemies.clear()
                 player.remove(all_sprites)
         enemies = updated_enemies
+
+        for bullet in bullets:
+            # Check for collision
+            for enemy_x, enemy_y in enemies:
+                if bullet.rect.colliderect(pygame.Rect(enemy_x, enemy_y, ENEMY_WIDTH, ENEMY_HEIGHT)):
+                    # Handle collision
+                    enemies.remove([enemy_x, enemy_y])
+                    score += 100
+                    score_counter = font.render(
+                        f'Score: {score // 60}', True, (255, 255, 255))
 
         all_sprites.draw(canvas)
         pygame.display.flip()
