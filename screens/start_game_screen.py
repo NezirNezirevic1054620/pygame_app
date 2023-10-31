@@ -2,6 +2,7 @@ import pygame
 import math
 import random
 
+from classes.player_health import PlayerHealth
 from classes.bullet import Bullet
 from utils.game_sound import press_button_sound, game_over_sound
 from screens.game_over_screen import game_over_screen
@@ -70,6 +71,10 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
     all_sprites.add(player)
     json = JsonController(score_json, "w")
 
+    # Health bar
+    health_bar = PlayerHealth(max_health=100, width=200, height=20, x=10, y=10)
+
+
     while run:
         clock.tick(GAME_SPEED)
 
@@ -101,6 +106,8 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                                                          255, 255), (0, 0, 0)
         )
 
+        health_bar.update(canvas)
+        
         # Score
         score += 100
         score_counter = font.render(
