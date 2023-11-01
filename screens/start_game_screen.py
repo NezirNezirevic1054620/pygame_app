@@ -79,7 +79,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
             scroll = 0
 
         canvas.blit(score_counter, (10, 10))
-        timer.initialize(canvas=canvas, text_color=text_color, x=435, y=700, GAME_SPEED=GAME_SPEED, font=font)
+        timer.initialize(canvas=canvas, text_color=text_color, x=435, y=700, GAME_SPEED=GAME_SPEED)
         score += 100
         score_counter = font.render(
             f'Score: {score // 60}', True, (255, 255, 255))

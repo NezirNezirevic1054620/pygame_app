@@ -12,7 +12,7 @@ class Timer:
     def __init__(self):
         self.timer_text = f"Timer: {self.hours}:{self.minutes}:{self.seconds // 60}"
 
-    def initialize(self, canvas, text_color, x, y, GAME_SPEED, font):
+    def initialize(self, canvas, text_color, x, y, GAME_SPEED):
         clock = pygame.time.Clock()
         while True:
             clock.tick(GAME_SPEED)
