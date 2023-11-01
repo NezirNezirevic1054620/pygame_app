@@ -14,15 +14,17 @@ gravity = 0.1
 plane = pygame.image.load("images/vliegtuigje2.png")
 enemy_image = pygame.transform.scale(
     pygame.image.load("images/vliegtuigje3.png"), (150, 80))
-
+powerup = pygame.image.load("images/power-up-1000.png")
+endgame = pygame.image.load("images/power-up-end.png")
 ENEMY_WIDTH, ENEMY_HEIGHT = 150, 80
+POWERUP_WIDHT, POWERUP_HEIGHT = 40, 40
 meteoriet = pygame.image.load('images/meteoriet.png')
 score_json = "data/score.json"
 
 
 # functie om random enemy positie te genereren
 def generate_enemy_position(SCREEN_WIDTH, SCREEN_HEIGHT):
-    enemy_x = SCREEN_WIDTH
+    enemy_x = SCREEN_WIDTH 
     enemy_y = random.randint(0, SCREEN_HEIGHT - ENEMY_HEIGHT)
 
     return enemy_x, enemy_y
@@ -38,6 +40,17 @@ def draw_enemy(canvas, enemy_x, enemy_y):
     canvas.blit(enemy_image, (enemy_x, enemy_y))
 
 
+# power-up drawen
+def draw_powerup(canvas, powerup_x, powerup_y):
+    canvas.blit(powerup, (powerup_x, powerup_y))
+
+# power up spawnen
+def generate_powerup_position(SCREEN_WIDTH, SCREEN_HEIGHT):
+    powerup_x = SCREEN_WIDTH - 100 
+    powerup_y = random.randint(0, SCREEN_HEIGHT - POWERUP_HEIGHT)
+
+    return powerup_x, powerup_y
+
 # start game scherm
 def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, text_color):
     background = pygame.image.load("images/background.png").convert()
@@ -50,6 +63,9 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
     # enemy variabelen
     enemies = []
     enemy_spawn_timer = 0
+
+    powerups = []
+    powerup_spawn_timer = 0
 
     # Game loop
     clock = pygame.time.Clock()
@@ -85,6 +101,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
             f'Score: {score // 60}', True, (255, 255, 255))
 
         # Generate enemies
+        powerup_spawn_timer += 1
         enemy_spawn_timer += 1
         if enemy_spawn_timer >= 5 * GAME_SPEED:
             enemy_spawn_timer = 0
@@ -92,7 +109,22 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                 SCREEN_WIDTH, SCREEN_HEIGHT)
             enemies.append([enemy_x, enemy_y])
 
+
         updated_enemies = []
+        updated_powerups = []
+        if powerup_spawn_timer >= 2 * GAME_SPEED:
+            powerup_spawn_timer = 0
+            powerup_x, powerup_y = generate_powerup_position(
+                SCREEN_WIDTH, SCREEN_HEIGHT)
+            powerups.append([powerup_x, powerup_y])
+
+        for powerup_x, powerup_y in powerups:
+            powerup_x -= 8
+
+            if powerup_x + POWERUP_WIDHT > 0:
+                draw_powerup(canvas, powerup_x, powerup_y)
+                updated_powerups.append([powerup_x, powerup_y])
+
         for enemy_x, enemy_y in enemies:
             enemy_x -= 8  # beweegt naar links
 
