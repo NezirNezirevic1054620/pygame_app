@@ -23,6 +23,10 @@ class Player(pygame.sprite.Sprite):
         self.rect.bottom = Player.HEIGHT / 2
         self.plane_y_position = 0
 
+        self.health = 99  # Initialize the player's health
+        self.max_health = 99  # Define the maximum health
+        self.health_bar_length = 99  # Define the length of the health bar
+
     def update(self):
         self.plane_y_position = 0
         keystate = pygame.key.get_pressed()
@@ -37,6 +41,25 @@ class Player(pygame.sprite.Sprite):
             self.rect.top = 0
 
     def shoot(self, all_sprites, bullets):
-        bullet = Bullet(self.rect.centerx, self.rect.top, self.bullet_image, 0.3)
+        bullet = Bullet(self.rect.centerx, self.rect.top,
+                        self.bullet_image, 0.3)
         all_sprites.add(bullet)
         bullets.add(bullet)
+
+    def draw_health_bar(self, screen):
+        bar_width = int((self.health / self.max_health)
+                        * self.health_bar_length)
+        bar_color = (0, 255, 0)  # Green when healthy
+
+        # Draw the background of the health bar
+        pygame.draw.rect(screen, (255, 0, 0), (self.rect.centerx -
+                         self.health_bar_length / 2, self.rect.top - 30, self.health_bar_length, 20))
+
+        # Draw the actual health bar
+        pygame.draw.rect(screen, bar_color, (self.rect.centerx -
+                         self.health_bar_length / 2, self.rect.top - 30, bar_width, 20))
+
+        font = pygame.font.Font(None, 36)
+        text = font.render(f"Health: {self.health}", True, (255, 255, 255))
+        screen.blit(text, (self.rect.centerx -
+                    text.get_width() / 2, self.rect.top - 50))

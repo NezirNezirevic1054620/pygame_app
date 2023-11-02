@@ -27,13 +27,15 @@ METEORITE_HEIGHT = meteorite_image.get_height()
 meteorite_rect = meteorite_image.get_rect()
 score_json = "data/score.json"
 
+
 # health_bar = PlayerHealth(max_health=99, width=200, height=20, x=10, y=10)
 
 def generate_meteorite_pos(SCREEN_WIDTH, SCREEN_HEIGHT):
     meteorite_x = SCREEN_WIDTH
     meteorite_y = random.randint(0, 600)
-    
+
     return meteorite_x, meteorite_y
+
 
 def draw_meteorite(canvas, meteorite_x, meteorite_y):
     canvas.blit(meteorite_image, (meteorite_x, meteorite_y))
@@ -81,8 +83,13 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
     all_sprites.add(player)
     json = JsonController(score_json, "r+")
     timer = Timer()
+    collision_occurred = False
 
-    while run:
+    active_enemies = []
+    collided_enemies = []
+    collided_meteorites = []
+
+    while run and player.health > 0:
         clock.tick(GAME_SPEED)
 
         for i in range(0, screen_tiles):
@@ -119,27 +126,33 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                 draw_enemy(canvas, enemy_x, enemy_y)
                 updated_enemies.append([enemy_x, enemy_y])
 
-        
-
             # Check for collision
             if player.rect.colliderect(pygame.Rect(enemy_x, enemy_y, ENEMY_WIDTH, ENEMY_HEIGHT)):
                 # Handle collision
                 json.write_json(score=score)
-                run = False
+                player.health -= 33  # Reduce health by 33%
+                if player.health < 0:
+                    player.health = 0  # Ensure health doesn't go below 0
                 press_button_sound()
-                game_over_sound()
-                game_over_screen(
-                    SCREEN_HEIGHT=SCREEN_HEIGHT,
-                    SCREEN_WIDTH=SCREEN_WIDTH,
-                    canvas=canvas,
-                    font=font,
-                    text_color=text_color
-                )
-                bullets.empty()
-                enemies.clear()
-                player.remove(all_sprites)
-        enemies = updated_enemies
 
+                if player.health == 0:
+                    game_over_sound()
+                    bullets.empty()
+                    enemies.clear()
+                    player.remove(all_sprites)
+                    game_over_screen(
+                        SCREEN_HEIGHT=SCREEN_HEIGHT,
+                        SCREEN_WIDTH=SCREEN_WIDTH,
+                        canvas=canvas,
+                        font=font,
+                        text_color=text_color
+                    )
+                collided_enemies.append([enemy_x, enemy_y])
+            else:
+                pass
+
+        enemies = updated_enemies
+        enemies = [enemy for enemy in enemies if enemy not in collided_enemies]
 
         # Generate meteorites
         if meteorite_timer <= 0:
@@ -156,26 +169,34 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
             if meteorite_x + METEORITE_WIDTH > 0:
                 draw_meteorite(canvas, meteorite_x, meteorite_y)
                 updated_meteorites.append([meteorite_x, meteorite_y])
-        meteorites = updated_meteorites
+            meteorites = updated_meteorites
 
-        if player.rect.colliderect(pygame.Rect(meteorite_x, meteorite_y, METEORITE_WIDTH, METEORITE_HEIGHT)):
+            if player.rect.colliderect(pygame.Rect(meteorite_x, meteorite_y, METEORITE_WIDTH, METEORITE_HEIGHT)):
                 # Handle collision
-                json.write_data(score=score)
-                run = False
+                json.write_json(score=score)
+                player.health -= 33  # Reduce health by 33%
+                if player.health < 0:
+                    player.health = 0  # Ensure health doesn't go below 0
                 press_button_sound()
-                game_over_sound()
-                game_over_screen(
-                    SCREEN_HEIGHT=SCREEN_HEIGHT,
-                    SCREEN_WIDTH=SCREEN_WIDTH,
-                    canvas=canvas,
-                    font=font,
-                    text_color=text_color
-                )
-                bullets.empty()
-                enemies.clear()
-                player.remove(all_sprites)
 
+                if player.health == 0:
+                    game_over_sound()
+                    bullets.empty()
+                    enemies.clear()
+                    player.remove(all_sprites)
+                    game_over_screen(
+                        SCREEN_HEIGHT=SCREEN_HEIGHT,
+                        SCREEN_WIDTH=SCREEN_WIDTH,
+                        canvas=canvas,
+                        font=font,
+                        text_color=text_color
+                    )
+                collided_meteorites.append([meteorite_x, meteorite_y])
+            else:
+                pass
 
+        meteorites = [
+            meteorite for meteorite in meteorites if meteorite not in collided_meteorites]
 
         for bullet in bullets:
             # Check for collision
@@ -189,9 +210,12 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                     score_counter = font.render(
                         f'Score: {score // 60}', True, (255, 255, 255))
 
-        
-            
         all_sprites.draw(canvas)
+
+        # Draw the player's health bar
+        if player.health > 0:
+            player.draw_health_bar(canvas)
+
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
