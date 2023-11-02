@@ -52,7 +52,7 @@ def generate_powerup_position(SCREEN_WIDTH, SCREEN_HEIGHT):
 
     return powerup_x, powerup_y
 
-#endgame drawen
+# endgame drawen
 def draw_endgame(canvas, endgame_x, endgame_y):
     canvas.blit(endgame, (endgame_x, endgame_y))
 
@@ -132,7 +132,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
         updated_powerups = []
         updated_gameender = []
 
-        if endgame_spawn_timer >= 10 * GAME_SPEED:
+        if endgame_spawn_timer >= 120 * GAME_SPEED:
             endgame_spawn_timer = 0
             endgame_x, endgame_y = generate_endgame_position(SCREEN_WIDTH, SCREEN_HEIGHT)
             gameender.append([endgame_x, endgame_y])
@@ -143,15 +143,22 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                 SCREEN_WIDTH, SCREEN_HEIGHT)
             powerups.append([powerup_x, powerup_y])
 
-        for powerup_x, powerup_y in powerups:
+        for powerup_x, powerup_y in powerups[:]:
             powerup_x -= 2 
 
             if powerup_x + POWERUP_WIDHT > 0:
                 draw_powerup(canvas, powerup_x, powerup_y)
                 updated_powerups.append([powerup_x, powerup_y])
 
+            for powerup_x, powerup_y in powerups[:]:
+
+                if player.rect.colliderect(pygame.Rect(powerup_x, powerup_y, POWERUP_WIDHT, POWERUP_HEIGHT)):
+                    powerups.remove([powerup_x, powerup_y])
+                    score += 1000
+
+
         for endgame_x, endgame_y in gameender:
-            endgame_x -= 4
+            endgame_x -= 1
 
             if endgame_x + ENDGAME_WIDHT > 0:
                 draw_endgame(canvas, endgame_x, endgame_y)
@@ -166,6 +173,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
 
             # Check for collision
             if player.rect.colliderect(pygame.Rect(enemy_x, enemy_y, ENEMY_WIDTH, ENEMY_HEIGHT)):
+
                 # Handle collision
                 json.write_data(score=score)
                 run = False
@@ -194,6 +202,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                     score += 100
                     score_counter = font.render(
                         f'Score: {score // 60}', True, (255, 255, 255))
+
 
         all_sprites.draw(canvas)
         pygame.display.flip()
