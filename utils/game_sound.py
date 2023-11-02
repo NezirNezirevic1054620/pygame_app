@@ -22,3 +22,15 @@ def game_over_sound():
     mixer.music.load(game_over_sound_path)
     mixer.music.set_volume(0.2)
     mixer.music.play(0)
+
+
+def collision_sound():
+    collision_sound_path = "sounds/block_hit.mp3"
+    collision_sound = pygame.mixer.Sound(collision_sound_path)
+    collision_sound.play(0)
+
+
+def dead_sound():
+    dead_sound_path = "sounds/space_shooter_dead.mp3"
+    dead_sound = pygame.mixer.Sound(dead_sound_path)
+    dead_sound.play(0)

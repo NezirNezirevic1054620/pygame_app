@@ -4,7 +4,7 @@ import random
 
 
 from classes.bullet import Bullet
-from utils.game_sound import press_button_sound, game_over_sound
+from utils.game_sound import press_button_sound, game_over_sound, collision_sound, dead_sound
 from screens.game_over_screen import game_over_screen
 from screens.start_screen import start_screen
 from classes.player import Player
@@ -133,7 +133,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                 player.health -= 33  # Reduce health by 33%
                 if player.health < 0:
                     player.health = 0  # Ensure health doesn't go below 0
-                press_button_sound()
+                dead_sound()
 
                 if player.health == 0:
                     game_over_sound()
@@ -177,7 +177,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                 player.health -= 33  # Reduce health by 33%
                 if player.health < 0:
                     player.health = 0  # Ensure health doesn't go below 0
-                press_button_sound()
+                dead_sound()
 
                 if player.health == 0:
                     game_over_sound()
@@ -222,6 +222,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                 run = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
+                    collision_sound()
                     player.shoot(all_sprites=all_sprites, bullets=bullets)
                     all_sprites.update()
                     score += 10000
