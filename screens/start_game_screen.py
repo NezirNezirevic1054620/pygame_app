@@ -46,7 +46,7 @@ def draw_powerup(canvas, powerup_x, powerup_y):
 
 # power up spawnen
 def generate_powerup_position(SCREEN_WIDTH, SCREEN_HEIGHT):
-    powerup_x = SCREEN_WIDTH - 100 
+    powerup_x = SCREEN_WIDTH -200
     powerup_y = random.randint(0, SCREEN_HEIGHT - POWERUP_HEIGHT)
 
     return powerup_x, powerup_y
@@ -100,7 +100,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
         score_counter = font.render(
             f'Score: {score // 60}', True, (255, 255, 255))
 
-        # Generate enemies
+        # Generate enemies en powerups 
         powerup_spawn_timer += 1
         enemy_spawn_timer += 1
         if enemy_spawn_timer >= 5 * GAME_SPEED:
@@ -150,6 +150,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                 enemies.clear()
                 player.remove(all_sprites)
         enemies = updated_enemies
+        powerups = updated_powerups
 
         for bullet in bullets:
             # Check for collision
