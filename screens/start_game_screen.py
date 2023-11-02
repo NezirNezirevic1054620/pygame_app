@@ -2,7 +2,6 @@ import pygame
 import math
 import random
 
-
 from classes.bullet import Bullet
 from utils.game_sound import press_button_sound, game_over_sound, collision_sound, dead_sound
 from screens.game_over_screen import game_over_screen
@@ -11,9 +10,7 @@ from classes.player import Player
 from classes.json_controller import JsonController
 from classes.timer import Timer
 
-
 pygame.init()
-
 
 gravity = 0.1
 plane = pygame.image.load("images/vliegtuigje2.png")
@@ -29,7 +26,6 @@ endgame = pygame.image.load("images/power-up-end.png")
 ENEMY_WIDTH, ENEMY_HEIGHT = 150, 80
 POWERUP_WIDHT, POWERUP_HEIGHT = 40, 40
 ENDGAME_WIDHT, ENDGAME_HEIGHT = 40, 40
-meteoriet = pygame.image.load('images/meteoriet.png')
 score_json = "data/score.json"
 
 
