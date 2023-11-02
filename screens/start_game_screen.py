@@ -27,7 +27,7 @@ METEORITE_HEIGHT = meteorite_image.get_height()
 meteorite_rect = meteorite_image.get_rect()
 score_json = "data/score.json"
 
-health_bar = PlayerHealth(max_health=99, width=200, height=20, x=10, y=10)
+# health_bar = PlayerHealth(max_health=99, width=200, height=20, x=10, y=10)
 
 def generate_meteorite_pos(SCREEN_WIDTH, SCREEN_HEIGHT):
     meteorite_x = SCREEN_WIDTH
