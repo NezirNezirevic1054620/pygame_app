@@ -9,6 +9,7 @@ from screens.game_over_screen import game_over_screen
 from screens.start_screen import start_screen
 from classes.player import Player
 from classes.json_controller import JsonController
+from classes.timer import Timer
 
 pygame.init()
 gravity = 0.1
@@ -35,8 +36,6 @@ def draw_obstacle(canvas, obstacle_x, obstacle_y):
 
 
 # functie om enemy te drawen
-
-
 def draw_enemy(canvas, enemy_x, enemy_y):
     canvas.blit(enemy_image, (enemy_x, enemy_y))
 
@@ -55,11 +54,6 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
     enemy_spawn_timer = 0
 
     # Game loop
-    hours = 0
-    minutes = 0
-    seconds = 0
-    text = font.render(f"{hours}:{minutes}:{seconds}",
-                       True, (255, 255, 255), (0, 0, 0))
     clock = pygame.time.Clock()
     score = 0
     score_counter = font.render(f'Score: {score}', True, (255, 255, 255))
@@ -69,7 +63,8 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
 
     player = Player(plane, 0.3)
     all_sprites.add(player)
-    json = JsonController(score_json, "w")
+    json = JsonController(score_json, "r+")
+    timer = Timer()
 
     # Health bar
     health_bar = PlayerHealth(max_health=100, width=200, height=20, x=10, y=10)
@@ -89,17 +84,6 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
         if abs(scroll) > background_width:
             scroll = 0
 
-        seconds += 1
-        # timer
-        if seconds == 3600:
-            seconds = 0
-            minutes += 1
-        if minutes == 60:
-            minutes = 0
-            seconds = 0
-            hours += 1
-
-        canvas.blit(text, (470, 700))
         canvas.blit(score_counter, (10, 10))
         text = font.render(
             f"{hours}:{minutes}:{seconds // 60}", True, (255,
@@ -109,6 +93,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
         health_bar.update(canvas)
         
         # Score
+        timer.initialize(canvas=canvas, text_color=text_color, x=435, y=700, GAME_SPEED=GAME_SPEED)
         score += 100
         score_counter = font.render(
             f'Score: {score // 60}', True, (255, 255, 255))
@@ -132,7 +117,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
             # Check for collision
             if player.rect.colliderect(pygame.Rect(enemy_x, enemy_y, ENEMY_WIDTH, ENEMY_HEIGHT)):
                 # Handle collision
-                json.write_data(score=score)
+                json.write_json(score=score)
                 run = False
                 press_button_sound()
                 game_over_sound()
@@ -154,9 +139,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                 if bullet.rect.colliderect(pygame.Rect(enemy_x, enemy_y, ENEMY_WIDTH, ENEMY_HEIGHT)):
                     # Handle collision
                     enemies.remove([enemy_x, enemy_y])
-                    score += 100
-                    score_counter = font.render(
-                        f'Score: {score // 60}', True, (255, 255, 255))
+                    score += 10000
 
         all_sprites.draw(canvas)
         pygame.display.flip()
@@ -167,6 +150,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                 if event.key == pygame.K_SPACE:
                     player.shoot(all_sprites=all_sprites, bullets=bullets)
                     all_sprites.update()
+                    score += 10000
                 if event.key == pygame.K_m:
                     run = False
                     press_button_sound()

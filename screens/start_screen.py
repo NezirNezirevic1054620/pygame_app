@@ -1,6 +1,7 @@
 import pygame
 from classes.button import Button
 from classes.text import Text
+from classes.json_controller import JsonController
 
 pygame.init()
 
@@ -8,6 +9,8 @@ background_image = pygame.image.load("images/pygame_start_bg.png")
 background_ingame = pygame.image.load("images/background.png")
 start_btn_img = pygame.image.load("images/start_btn.png")
 exit_btn_img = pygame.image.load("images/exit_btn.png")
+score_path = "data/score.json"
+score = JsonController(score_path, "r")
 
 
 def start_screen(canvas):
@@ -19,4 +22,6 @@ def start_screen(canvas):
     play_text = Text("PRESS P TO PLAY", (255, 255, 255), 365, 480)
     play_text.draw(canvas)
     quit_text = Text("PRESS Q TO QUIT", (255, 255, 255), 370, 650)
+    highscore = Text(f"Highscore: {score.load_data()}", (255, 255, 255), 390, 300)
+    highscore.draw(canvas)
     quit_text.draw(canvas)
