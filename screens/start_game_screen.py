@@ -19,12 +19,17 @@ gravity = 0.1
 plane = pygame.image.load("images/vliegtuigje2.png")
 enemy_image = pygame.transform.scale(
     pygame.image.load("images/vliegtuigje3.png"), (150, 80))
-ENEMY_WIDTH, ENEMY_HEIGHT = 150, 80
 meteorite_image = pygame.transform.scale(
     pygame.image.load("images/meteorite.png"), (100, 100))
 METEORITE_WIDTH = meteorite_image.get_width()
 METEORITE_HEIGHT = meteorite_image.get_height()
 meteorite_rect = meteorite_image.get_rect()
+powerup = pygame.image.load("images/power-up-1000.png")
+endgame = pygame.image.load("images/power-up-end.png")
+ENEMY_WIDTH, ENEMY_HEIGHT = 150, 80
+POWERUP_WIDHT, POWERUP_HEIGHT = 40, 40
+ENDGAME_WIDHT, ENDGAME_HEIGHT = 40, 40
+meteoriet = pygame.image.load('images/meteoriet.png')
 score_json = "data/score.json"
 
 
@@ -54,6 +59,32 @@ def draw_enemy(canvas, enemy_x, enemy_y):
     canvas.blit(enemy_image, (enemy_x, enemy_y))
 
 
+# power-up drawen
+def draw_powerup(canvas, powerup_x, powerup_y):
+    canvas.blit(powerup, (powerup_x, powerup_y))
+
+
+# power up spawnen
+def generate_powerup_position(SCREEN_WIDTH, SCREEN_HEIGHT):
+    powerup_x = SCREEN_WIDTH - 200
+    powerup_y = random.randint(0, SCREEN_HEIGHT - POWERUP_HEIGHT)
+
+    return powerup_x, powerup_y
+
+
+# endgame drawen
+def draw_endgame(canvas, endgame_x, endgame_y):
+    canvas.blit(endgame, (endgame_x, endgame_y))
+
+
+# end game spawnen
+def generate_endgame_position(SCREEN_WIDHT, SCREEN_HEIGHT):
+    endgame_x = SCREEN_WIDHT - 100
+    endgame_y = random.randint(0, SCREEN_HEIGHT - ENDGAME_HEIGHT)
+
+    return endgame_x, endgame_y
+
+
 # start game scherm
 def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, text_color):
     background = pygame.image.load("images/background.png").convert()
@@ -70,6 +101,12 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
     # enemy variabelen
     enemies = []
     enemy_spawn_timer = 0
+
+    powerups = []
+    powerup_spawn_timer = 0
+
+    gameender = []
+    endgame_spawn_timer = 0
 
     # Game loop
     clock = pygame.time.Clock()
@@ -110,8 +147,12 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
         score_counter = font.render(
             f'Score: {score // 60}', True, (255, 255, 255))
 
-        # Generate enemies
+        # Generate enemies en powerups and the final game ender
+
+        powerup_spawn_timer += 1
         enemy_spawn_timer += 1
+        endgame_spawn_timer += 1
+
         if enemy_spawn_timer >= 5 * GAME_SPEED:
             enemy_spawn_timer = 0
             enemy_x, enemy_y = generate_enemy_position(
@@ -119,6 +160,21 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
             enemies.append([enemy_x, enemy_y])
 
         updated_enemies = []
+        updated_powerups = []
+
+        if powerup_spawn_timer >= 10 * GAME_SPEED:
+            powerup_spawn_timer = 0
+            powerup_x, powerup_y = generate_powerup_position(
+                SCREEN_WIDTH, SCREEN_HEIGHT)
+            powerups.append([powerup_x, powerup_y])
+
+        for powerup_x, powerup_y in powerups[:]:
+            powerup_x -= 2
+
+            if powerup_x + POWERUP_WIDHT > 0:
+                draw_powerup(canvas, powerup_x, powerup_y)
+                updated_powerups.append([powerup_x, powerup_y])
+
         for enemy_x, enemy_y in enemies:
             enemy_x -= 8  # beweegt naar links
 
@@ -198,6 +254,8 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
         meteorites = [
             meteorite for meteorite in meteorites if meteorite not in collided_meteorites]
 
+        powerups = updated_powerups
+
         for bullet in bullets:
             # Check for collision
             for enemy_x, enemy_y in enemies:
@@ -209,6 +267,11 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                     score += 100
                     score_counter = font.render(
                         f'Score: {score // 60}', True, (255, 255, 255))
+
+            for powerup_x, powerup_y in powerups:
+                if bullet.rect.colliderect(pygame.Rect(powerup_x, powerup_y, POWERUP_WIDHT, POWERUP_WIDHT)):
+                    powerups.remove([powerup_x, powerup_y])
+                    score += 100000
 
         all_sprites.draw(canvas)
 

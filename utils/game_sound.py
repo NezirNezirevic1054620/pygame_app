@@ -7,7 +7,7 @@ pygame.mixer.init()
 def background_music():
     background_sound_path = "sounds/bg_sound.mp3"
     mixer.music.load(background_sound_path)
-    mixer.music.set_volume(0.2)
+    mixer.music.set_volume(0.01)
     mixer.music.play(-1)
 
 
