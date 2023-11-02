@@ -18,6 +18,7 @@ powerup = pygame.image.load("images/power-up-1000.png")
 endgame = pygame.image.load("images/power-up-end.png")
 ENEMY_WIDTH, ENEMY_HEIGHT = 150, 80
 POWERUP_WIDHT, POWERUP_HEIGHT = 40, 40
+ENDGAME_WIDHT, ENDGAME_HEIGHT = 40,40
 meteoriet = pygame.image.load('images/meteoriet.png')
 score_json = "data/score.json"
 
@@ -50,6 +51,14 @@ def generate_powerup_position(SCREEN_WIDTH, SCREEN_HEIGHT):
     powerup_y = random.randint(0, SCREEN_HEIGHT - POWERUP_HEIGHT)
 
     return powerup_x, powerup_y
+
+#endgame drawen
+def draw_endgame(canvas, endgame_x, endgame_y):
+    canvas.blit(endgame, (endgame_x, endgame_y))
+# end game spawnen
+def generate_endgame_position(SCREEN_WIDHT, SCREEN_HEIGHT):
+    endgame_x = SCREEN_WIDHT
+    endgame_y = random.randomint(0, SCREEN_HEIGHT - ENDGAME_HEIGHT)
 
 # start game scherm
 def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, text_color):
@@ -112,7 +121,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
 
         updated_enemies = []
         updated_powerups = []
-        if powerup_spawn_timer >= 2 * GAME_SPEED:
+        if powerup_spawn_timer >= 10 * GAME_SPEED:
             powerup_spawn_timer = 0
             powerup_x, powerup_y = generate_powerup_position(
                 SCREEN_WIDTH, SCREEN_HEIGHT)
