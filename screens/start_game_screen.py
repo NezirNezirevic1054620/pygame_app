@@ -2,7 +2,7 @@ import pygame
 import math
 import random
 
-from classes.player_health import PlayerHealth
+
 from classes.bullet import Bullet
 from utils.game_sound import press_button_sound, game_over_sound
 from screens.game_over_screen import game_over_screen
@@ -11,17 +11,32 @@ from classes.player import Player
 from classes.json_controller import JsonController
 from classes.timer import Timer
 
+
 pygame.init()
+
+
 gravity = 0.1
 plane = pygame.image.load("images/vliegtuigje2.png")
 enemy_image = pygame.transform.scale(
     pygame.image.load("images/vliegtuigje3.png"), (150, 80))
-
 ENEMY_WIDTH, ENEMY_HEIGHT = 150, 80
-meteoriet = pygame.image.load('images/meteoriet.png')
+meteorite_image = pygame.transform.scale(
+    pygame.image.load("images/meteorite.png"), (100, 100))
+METEORITE_WIDTH = meteorite_image.get_width()
+METEORITE_HEIGHT = meteorite_image.get_height()
+meteorite_rect = meteorite_image.get_rect()
 score_json = "data/score.json"
 
-health_bar = PlayerHealth(max_health=99, width=200, height=20, x=10, y=10)
+# health_bar = PlayerHealth(max_health=99, width=200, height=20, x=10, y=10)
+
+def generate_meteorite_pos(SCREEN_WIDTH, SCREEN_HEIGHT):
+    meteorite_x = SCREEN_WIDTH
+    meteorite_y = random.randint(0, 600)
+    
+    return meteorite_x, meteorite_y
+
+def draw_meteorite(canvas, meteorite_x, meteorite_y):
+    canvas.blit(meteorite_image, (meteorite_x, meteorite_y))
 
 
 # functie om random enemy positie te genereren
@@ -30,11 +45,6 @@ def generate_enemy_position(SCREEN_WIDTH, SCREEN_HEIGHT):
     enemy_y = random.randint(0, SCREEN_HEIGHT - ENEMY_HEIGHT)
 
     return enemy_x, enemy_y
-
-
-def draw_obstacle(canvas, obstacle_x, obstacle_y):
-    obstacle_rect = meteoriet.get_rect()
-    canvas.blit(meteoriet, obstacle_x, obstacle_y)
 
 
 # functie om enemy te drawen
@@ -50,6 +60,10 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
     # scrolling background variabelen
     scroll = 0
     screen_tiles = math.ceil(SCREEN_WIDTH / background_width) + 1
+
+    # Meteorite variabelen
+    meteorites = []
+    meteorite_timer = 0
 
     # enemy variabelen
     enemies = []
@@ -75,7 +89,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
             canvas.blit(background, (i * background_width + scroll, 0))
 
         # Scroll background
-        scroll -= 6
+        scroll -= 5
 
         # Reset scroll
         # abs functie verkrijgt absolute waarde van een nummer
@@ -105,6 +119,8 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                 draw_enemy(canvas, enemy_x, enemy_y)
                 updated_enemies.append([enemy_x, enemy_y])
 
+        
+
             # Check for collision
             if player.rect.colliderect(pygame.Rect(enemy_x, enemy_y, ENEMY_WIDTH, ENEMY_HEIGHT)):
                 # Handle collision
@@ -124,6 +140,43 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                 player.remove(all_sprites)
         enemies = updated_enemies
 
+
+        # Generate meteorites
+        if meteorite_timer <= 0:
+            meteorite_timer = random.randint(200, 400)
+            meteorite_x, meteorite_y = generate_meteorite_pos(
+                SCREEN_WIDTH, SCREEN_HEIGHT)
+            meteorites.append([meteorite_x, meteorite_y])
+        meteorite_timer -= 1
+
+        updated_meteorites = []
+        for meteorite_x, meteorite_y in meteorites:
+            meteorite_x -= 6  # beweegt naar links
+
+            if meteorite_x + METEORITE_WIDTH > 0:
+                draw_meteorite(canvas, meteorite_x, meteorite_y)
+                updated_meteorites.append([meteorite_x, meteorite_y])
+        meteorites = updated_meteorites
+
+        if player.rect.colliderect(pygame.Rect(meteorite_x, meteorite_y, METEORITE_WIDTH, METEORITE_HEIGHT)):
+                # Handle collision
+                json.write_data(score=score)
+                run = False
+                press_button_sound()
+                game_over_sound()
+                game_over_screen(
+                    SCREEN_HEIGHT=SCREEN_HEIGHT,
+                    SCREEN_WIDTH=SCREEN_WIDTH,
+                    canvas=canvas,
+                    font=font,
+                    text_color=text_color
+                )
+                bullets.empty()
+                enemies.clear()
+                player.remove(all_sprites)
+
+
+
         for bullet in bullets:
             # Check for collision
             for enemy_x, enemy_y in enemies:
@@ -132,6 +185,12 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                     enemies.remove([enemy_x, enemy_y])
                     score += 10000
 
+                    score += 100
+                    score_counter = font.render(
+                        f'Score: {score // 60}', True, (255, 255, 255))
+
+        
+            
         all_sprites.draw(canvas)
         pygame.display.flip()
         for event in pygame.event.get():
