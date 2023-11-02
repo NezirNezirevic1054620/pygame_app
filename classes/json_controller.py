@@ -7,6 +7,7 @@ class JsonController:
         self.filename = filename
         self.choice = choice
 
+    # data wordt geladen uit json
     def load_data(self):
         try:
             with open(f"{self.filename}", f"{self.choice}") as file:
@@ -16,6 +17,7 @@ class JsonController:
         except FileNotFoundError:
             print(f"{self.filename} not found")
 
+    # data van score worth geschreven binnen json bestand
     def write_json(self, score):
         try:
             with open(f"{self.filename}", f"{self.choice}") as file:

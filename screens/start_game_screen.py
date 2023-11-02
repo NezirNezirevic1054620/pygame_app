@@ -92,6 +92,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
     enemies = []
     enemy_spawn_timer = 0
 
+    # powerups variabelen
     powerups = []
     powerup_spawn_timer = 0
 
@@ -109,9 +110,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
     all_sprites.add(player)
     json = JsonController(score_json, "r+")
     timer = Timer()
-    collision_occurred = False
 
-    active_enemies = []
     collided_enemies = []
     collided_meteorites = []
 
@@ -147,6 +146,8 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
             enemy_x, enemy_y = generate_enemy_position(
                 SCREEN_WIDTH, SCREEN_HEIGHT)
             enemies.append([enemy_x, enemy_y])
+
+        # Generate powerups
 
         updated_enemies = []
         updated_powerups = []
@@ -269,7 +270,9 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
             player.draw_health_bar(canvas)
 
         pygame.display.flip()
-        if score >= 1000000:
+
+        # als de score op 10,000 komt dan win je het spel
+        if score >= 600000:
             run = False
             canvas.blit(win_screen, (0, 0))
             pygame.display.flip()

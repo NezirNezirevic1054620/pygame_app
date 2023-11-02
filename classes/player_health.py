@@ -1,6 +1,3 @@
-import pygame
-
-
 class PlayerHealth:
 
     def __init__(self, max_health, width, height, x, y):
