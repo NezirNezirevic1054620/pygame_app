@@ -18,7 +18,7 @@ powerup = pygame.image.load("images/power-up-1000.png")
 endgame = pygame.image.load("images/power-up-end.png")
 ENEMY_WIDTH, ENEMY_HEIGHT = 150, 80
 POWERUP_WIDHT, POWERUP_HEIGHT = 40, 40
-ENDGAME_WIDHT, ENDGAME_HEIGHT = 40,40
+ENDGAME_WIDHT, ENDGAME_HEIGHT = 40, 40
 meteoriet = pygame.image.load('images/meteoriet.png')
 score_json = "data/score.json"
 
@@ -55,10 +55,13 @@ def generate_powerup_position(SCREEN_WIDTH, SCREEN_HEIGHT):
 #endgame drawen
 def draw_endgame(canvas, endgame_x, endgame_y):
     canvas.blit(endgame, (endgame_x, endgame_y))
+
 # end game spawnen
 def generate_endgame_position(SCREEN_WIDHT, SCREEN_HEIGHT):
-    endgame_x = SCREEN_WIDHT
-    endgame_y = random.randomint(0, SCREEN_HEIGHT - ENDGAME_HEIGHT)
+    endgame_x = SCREEN_WIDHT -100
+    endgame_y = random.randint(0, SCREEN_HEIGHT - ENDGAME_HEIGHT)
+
+    return endgame_x, endgame_y
 
 # start game scherm
 def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, text_color):
@@ -75,6 +78,9 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
 
     powerups = []
     powerup_spawn_timer = 0
+
+    gameender = []
+    endgame_spawn_timer = 0
 
     # Game loop
     clock = pygame.time.Clock()
@@ -109,9 +115,12 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
         score_counter = font.render(
             f'Score: {score // 60}', True, (255, 255, 255))
 
-        # Generate enemies en powerups 
+        # Generate enemies en powerups and the final game ender
+
         powerup_spawn_timer += 1
         enemy_spawn_timer += 1
+        endgame_spawn_timer += 1
+
         if enemy_spawn_timer >= 5 * GAME_SPEED:
             enemy_spawn_timer = 0
             enemy_x, enemy_y = generate_enemy_position(
@@ -121,6 +130,13 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
 
         updated_enemies = []
         updated_powerups = []
+        updated_gameender = []
+
+        if endgame_spawn_timer >= 10 * GAME_SPEED:
+            endgame_spawn_timer = 0
+            endgame_x, endgame_y = generate_endgame_position(SCREEN_WIDTH, SCREEN_HEIGHT)
+            gameender.append([endgame_x, endgame_y])
+
         if powerup_spawn_timer >= 10 * GAME_SPEED:
             powerup_spawn_timer = 0
             powerup_x, powerup_y = generate_powerup_position(
@@ -128,11 +144,18 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
             powerups.append([powerup_x, powerup_y])
 
         for powerup_x, powerup_y in powerups:
-            powerup_x -= 8
+            powerup_x -= 2 
 
             if powerup_x + POWERUP_WIDHT > 0:
                 draw_powerup(canvas, powerup_x, powerup_y)
                 updated_powerups.append([powerup_x, powerup_y])
+
+        for endgame_x, endgame_y in gameender:
+            endgame_x -= 4
+
+            if endgame_x + ENDGAME_WIDHT > 0:
+                draw_endgame(canvas, endgame_x, endgame_y)
+                updated_gameender.append([endgame_x, endgame_y])
 
         for enemy_x, enemy_y in enemies:
             enemy_x -= 8  # beweegt naar links
@@ -160,6 +183,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                 player.remove(all_sprites)
         enemies = updated_enemies
         powerups = updated_powerups
+        gameender = updated_gameender
 
         for bullet in bullets:
             # Check for collision
