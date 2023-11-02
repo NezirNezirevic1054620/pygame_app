@@ -61,7 +61,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
 
     player = Player(plane, 0.3)
     all_sprites.add(player)
-    json = JsonController(score_json, "w")
+    json = JsonController(score_json, "r+")
     timer = Timer()
 
     while run:
@@ -103,7 +103,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
             # Check for collision
             if player.rect.colliderect(pygame.Rect(enemy_x, enemy_y, ENEMY_WIDTH, ENEMY_HEIGHT)):
                 # Handle collision
-                json.write_data(score=score)
+                json.write_json(score=score)
                 run = False
                 press_button_sound()
                 game_over_sound()
@@ -125,9 +125,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                 if bullet.rect.colliderect(pygame.Rect(enemy_x, enemy_y, ENEMY_WIDTH, ENEMY_HEIGHT)):
                     # Handle collision
                     enemies.remove([enemy_x, enemy_y])
-                    score += 100
-                    score_counter = font.render(
-                        f'Score: {score // 60}', True, (255, 255, 255))
+                    score += 10000
 
         all_sprites.draw(canvas)
         pygame.display.flip()
@@ -138,6 +136,7 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                 if event.key == pygame.K_SPACE:
                     player.shoot(all_sprites=all_sprites, bullets=bullets)
                     all_sprites.update()
+                    score += 10000
                 if event.key == pygame.K_m:
                     run = False
                     press_button_sound()
