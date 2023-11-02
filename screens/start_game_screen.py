@@ -2,8 +2,7 @@ import pygame
 import math
 import random
 
-from classes.bullet import Bullet
-from utils.game_sound import press_button_sound, game_over_sound, collision_sound, dead_sound
+from utils.game_sound import press_button_sound, game_over_sound, collision_sound, dead_sound, win_sound
 from screens.game_over_screen import game_over_screen
 from screens.start_screen import start_screen
 from classes.player import Player
@@ -22,11 +21,11 @@ METEORITE_WIDTH = meteorite_image.get_width()
 METEORITE_HEIGHT = meteorite_image.get_height()
 meteorite_rect = meteorite_image.get_rect()
 powerup = pygame.image.load("images/power-up-1000.png")
-endgame = pygame.image.load("images/power-up-end.png")
 ENEMY_WIDTH, ENEMY_HEIGHT = 150, 80
 POWERUP_WIDHT, POWERUP_HEIGHT = 40, 40
 ENDGAME_WIDHT, ENDGAME_HEIGHT = 40, 40
 score_json = "data/score.json"
+win_screen = pygame.image.load("images/you_win.png")
 
 
 # health_bar = PlayerHealth(max_health=99, width=200, height=20, x=10, y=10)
@@ -68,11 +67,6 @@ def generate_powerup_position(SCREEN_WIDTH, SCREEN_HEIGHT):
     return powerup_x, powerup_y
 
 
-# endgame drawen
-def draw_endgame(canvas, endgame_x, endgame_y):
-    canvas.blit(endgame, (endgame_x, endgame_y))
-
-
 # end game spawnen
 def generate_endgame_position(SCREEN_WIDHT, SCREEN_HEIGHT):
     endgame_x = SCREEN_WIDHT - 100
@@ -101,7 +95,6 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
     powerups = []
     powerup_spawn_timer = 0
 
-    gameender = []
     endgame_spawn_timer = 0
 
     # Game loop
@@ -276,6 +269,12 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
             player.draw_health_bar(canvas)
 
         pygame.display.flip()
+        if score >= 1000000:
+            run = False
+            canvas.blit(win_screen, (0, 0))
+            pygame.display.flip()
+            win_sound()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -286,13 +285,16 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                     all_sprites.update()
                     score += 10000
                 if event.key == pygame.K_m:
+                    json.write_json(score=score)
                     run = False
                     press_button_sound()
                     start_screen(canvas=canvas)
                     pygame.display.flip()
                 if event.key == pygame.K_q:
+                    json.write_json(score=score)
                     quit()
                 if event.key == pygame.K_r:
+                    json.write_json(score=score)
                     run = False
                     press_button_sound()
                     game_over_sound()

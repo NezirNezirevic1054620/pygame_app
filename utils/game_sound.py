@@ -36,3 +36,10 @@ def dead_sound():
     dead_sound = pygame.mixer.Sound(dead_sound_path)
     mixer.music.set_volume(0.2)
     dead_sound.play(0)
+
+
+def win_sound():
+    win_sound_path = "sounds/win_sound.mp3"
+    mixer.music.load(win_sound_path)
+    mixer.music.set_volume(0.2)
+    mixer.music.play(0)
