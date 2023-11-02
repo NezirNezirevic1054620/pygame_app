@@ -2,7 +2,7 @@ import pygame
 import math
 import random
 
-from classes.player_health import PlayerHealth
+# from classes.player_health import PlayerHealth
 from classes.bullet import Bullet
 from utils.game_sound import press_button_sound, game_over_sound
 from screens.game_over_screen import game_over_screen
@@ -20,6 +20,7 @@ enemy_image = pygame.transform.scale(
 ENEMY_WIDTH, ENEMY_HEIGHT = 150, 80
 meteoriet = pygame.image.load('images/meteoriet.png')
 score_json = "data/score.json"
+# health_bar = PlayerHealth(max_health=99, width=200, height=20, x=10, y=10)
 
 
 # functie om random enemy positie te genereren
@@ -66,10 +67,6 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
     json = JsonController(score_json, "r+")
     timer = Timer()
 
-    # Health bar
-    health_bar = PlayerHealth(max_health=100, width=200, height=20, x=10, y=10)
-
-
     while run:
         clock.tick(GAME_SPEED)
 
@@ -90,10 +87,9 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
                                                          255, 255), (0, 0, 0)
         )
 
-        health_bar.update(canvas)
-        
         # Score
-        timer.initialize(canvas=canvas, text_color=text_color, x=435, y=700, GAME_SPEED=GAME_SPEED)
+        timer.initialize(canvas=canvas, text_color=text_color,
+                         x=435, y=700, GAME_SPEED=GAME_SPEED)
         score += 100
         score_counter = font.render(
             f'Score: {score // 60}', True, (255, 255, 255))
