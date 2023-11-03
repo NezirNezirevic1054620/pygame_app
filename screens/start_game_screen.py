@@ -175,9 +175,9 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
             # Check for collision
             if player.rect.colliderect(pygame.Rect(enemy_x, enemy_y, ENEMY_WIDTH, ENEMY_HEIGHT)):
                 # Handle collision
-                json.write_json(score=score)
                 player.health -= 33  # Reduce health by 33%
-                if player.health < 0:
+                if player.health <= 0:
+                    json.write_json(score=score)
                     player.health = 0  # Ensure health doesn't go below 0
                 dead_sound()
 
@@ -219,9 +219,9 @@ def start_game_screen(canvas, font, SCREEN_WIDTH, GAME_SPEED, SCREEN_HEIGHT, tex
 
             if player.rect.colliderect(pygame.Rect(meteorite_x, meteorite_y, METEORITE_WIDTH, METEORITE_HEIGHT)):
                 # Handle collision
-                json.write_json(score=score)
                 player.health -= 33  # Reduce health by 33%
-                if player.health < 0:
+                if player.health <= 0:
+                    json.write_json(score=score)
                     player.health = 0  # Ensure health doesn't go below 0
                 dead_sound()
 
